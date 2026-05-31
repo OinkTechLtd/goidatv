@@ -1,4 +1,4 @@
-# 📺 DropTV — Открытый IPTV проект
+# 📺 GoidaTV — Открытый IPTV проект
 
 <div align="center">
 
@@ -10,7 +10,6 @@
 **Брутальный, солидарный, не жалеющий времени на проверку IPTV проект.**
 9 000+ каналов. Каждый проверен личным IPTV чекером.
 
-[🌐 Сайт](https://IPTVRU2026.github.io/IPTVMIR/site/) · [📥 Скачать плейлист](https://raw.githubusercontent.com/IPTVRU2026/IPTVMIR/main/IPTV_MEGA_PLAYLIST.m3u) · [🔍 Checker](https://IPTVRU2026.github.io/IPTVMIR/site/checker.html)
 
 </div>
 
@@ -19,21 +18,13 @@
 ## 🔗 RAW ссылка на плейлист
 
 ```
-https://raw.githubusercontent.com/IPTVRU2026/IPTVMIR/main/IPTV_MEGA_PLAYLIST.m3u
+https://raw.githubusercontent.com/OinkTechLtd/GoidaTV/main/IPTV_MEGA_PLAYLIST.m3u
 ```
 
 > Скопируйте и вставьте в любой IPTV плеер
 
 ---
 
-## 🌐 Сайт и Checker
-
-| | Ссылка |
-|---|---|
-| 🌐 Сайт | https://IPTVRU2026.github.io/IPTVMIR/site/ |
-| 🔍 Checker | https://IPTVRU2026.github.io/IPTVMIR/site/checker.html |
-
----
 
 ## 🛡️ Принципы
 
@@ -48,4 +39,4 @@ https://raw.githubusercontent.com/IPTVRU2026/IPTVMIR/main/IPTV_MEGA_PLAYLIST.m3u
 
 ---
 
-<div align="center">**DropTV** — потому что мы не жалеем времени ради вас 🔥</div>
+<div align="center">**GoidaTV** — потому что мы не жалеем времени ради вас 🔥</div>
