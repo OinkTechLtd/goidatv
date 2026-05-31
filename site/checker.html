@@ -1,0 +1,2590 @@
+```html
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>INDEX33 — IPTV Checker Pro</title>
+<link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Exo+2:wght@300;400;600;700;900&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/hls.js@1.4.14/dist/hls.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+/* ══════════════════════════════════════════
+   INDEX33 PRO — IPTV CHECKER
+   Optimized for GitHub Pages + Mobile
+══════════════════════════════════════════ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+
+:root {
+  --black: #000;
+  --bg:    #04060a;
+  --bg1:   #070b11;
+  --bg2:   #0b1018;
+  --bg3:   #101620;
+  --bg4:   #141c28;
+
+  --amber:  #ffb700;
+  --amber2: #ff8c00;
+  --cyan:   #00e5ff;
+  --cyan2:  #0099bb;
+  --green:  #39ff14;
+  --red:    #ff2244;
+  --purple: #c044ff;
+
+  --txt:    #d4dde8;
+  --txt2:   #637080;
+  --txt3:   #2a3848;
+
+  --mono: 'Share Tech Mono', monospace;
+  --head: 'Exo 2', sans-serif;
+
+  --r: 4px;
+  --r2: 8px;
+
+  --ga: 0 0 12px rgba(255,183,0,.4), 0 0 30px rgba(255,183,0,.15);
+  --gc: 0 0 12px rgba(0,229,255,.4), 0 0 30px rgba(0,229,255,.15);
+  --gg: 0 0 12px rgba(57,255,20,.4), 0 0 30px rgba(57,255,20,.15);
+  --gr: 0 0 12px rgba(255,34,68,.4), 0 0 30px rgba(255,34,68,.15);
+  
+  /* Mobile vars */
+  --header-h: 56px;
+  --sidebar-w: 280px;
+}
+
+html { 
+  font-size: 13px; 
+  scroll-behavior: smooth;
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  font-family: var(--mono);
+  background: var(--bg);
+  color: var(--txt);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  overflow-x: hidden;
+  touch-action: manipulation;
+}
+
+/* grid background */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background-image:
+    linear-gradient(rgba(0,229,255,.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,.025) 1px, transparent 1px);
+  background-size: 40px 40px;
+  pointer-events: none; z-index: 0;
+}
+
+/* scan lines */
+body::after {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    transparent, transparent 2px,
+    rgba(0,0,0,.06) 2px, rgba(0,0,0,.06) 4px
+  );
+  pointer-events: none; z-index: 0;
+}
+
+/* ══ HEADER ══ */
+header {
+  position: sticky; top: 0; z-index: 200;
+  background: rgba(4,6,10,.96);
+  backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(0,229,255,.15);
+  height: var(--header-h);
+  display: flex; align-items: center;
+  padding: 0 12px; gap: 10px;
+  -webkit-backdrop-filter: blur(20px);
+}
+
+.logo-mark {
+  font-family: var(--head);
+  font-weight: 900;
+  font-size: 20px;
+  letter-spacing: 2px;
+  color: var(--amber);
+  text-shadow: var(--ga);
+  flex-shrink: 0;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.logo-mark sup {
+  font-size: 9px;
+  color: var(--cyan);
+  letter-spacing: 1px;
+  vertical-align: super;
+  text-shadow: var(--gc);
+}
+
+.hdr-sep { width: 1px; height: 24px; background: var(--bg4); flex-shrink: 0; }
+
+.hdr-nav {
+  display: flex; gap: 1px;
+  overflow-x: auto; flex: 1;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+.hdr-nav::-webkit-scrollbar { display: none; }
+
+.hdr-tab {
+  padding: 5px 12px;
+  font-family: var(--mono);
+  font-size: 10px;
+  letter-spacing: 1px;
+  color: var(--txt2);
+  background: none; border: none;
+  border-radius: var(--r);
+  cursor: pointer;
+  white-space: nowrap;
+  transition: all .2s;
+  text-transform: uppercase;
+  flex-shrink: 0;
+}
+
+.hdr-tab:hover { color: var(--txt); background: var(--bg3); }
+.hdr-tab.on { color: var(--amber); background: rgba(255,183,0,.08); }
+
+.hdr-right {
+  display: flex; align-items: center; gap: 8px;
+  flex-shrink: 0; margin-left: auto;
+}
+
+.lang-sw {
+  display: flex; gap: 1px;
+  background: var(--bg2);
+  border: 1px solid var(--bg4);
+  border-radius: var(--r);
+  padding: 1px;
+}
+
+.lang-btn {
+  padding: 3px 8px;
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 1px;
+  border: none; background: none;
+  color: var(--txt2);
+  border-radius: 2px;
+  cursor: pointer;
+  transition: all .15s;
+}
+
+.lang-btn.on { background: var(--amber); color: #000; font-weight: 700; }
+
+/* ══ LAYOUT ══ */
+.app {
+  position: relative; z-index: 1;
+  flex: 1;
+  display: grid;
+  grid-template-columns: var(--sidebar-w) 1fr;
+  min-height: 0;
+}
+
+/* ══ SIDEBAR ══ */
+.sidebar {
+  background: var(--bg1);
+  border-right: 1px solid rgba(0,229,255,.08);
+  height: calc(100vh - var(--header-h));
+  position: sticky; top: var(--header-h);
+  overflow-y: auto; overflow-x: hidden;
+  display: flex; flex-direction: column;
+  -webkit-overflow-scrolling: touch;
+}
+
+.sb-section {
+  border-bottom: 1px solid var(--bg3);
+  padding: 12px 12px;
+}
+
+.sb-label {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--txt3);
+  margin-bottom: 8px;
+  display: flex; align-items: center; gap: 5px;
+}
+
+.sb-label::after {
+  content: ''; flex: 1;
+  height: 1px; background: var(--bg4);
+}
+
+/* ══ FORM ══ */
+.fld { display: flex; flex-direction: column; gap: 3px; margin-bottom: 6px; }
+.fld:last-child { margin-bottom: 0; }
+
+.fld-lbl {
+  font-size: 8px; letter-spacing: 1.2px;
+  color: var(--txt3); text-transform: uppercase;
+  display: flex; align-items: center; gap: 4px;
+}
+
+.fld-lbl .hint {
+  color: var(--cyan2);
+  cursor: help;
+  font-size: 10px;
+}
+
+input[type=text], input[type=file], input[type=number], select {
+  width: 100%;
+  background: var(--bg2);
+  border: 1px solid var(--bg4);
+  border-radius: var(--r);
+  color: var(--txt);
+  padding: 7px 9px;
+  font-family: var(--mono);
+  font-size: 11px;
+  outline: none;
+  transition: border-color .2s, box-shadow .2s;
+  appearance: none;
+}
+
+input[type=text]::placeholder { color: var(--txt3); }
+input[type=text]:focus, input[type=number]:focus, select:focus {
+  border-color: var(--cyan2);
+  box-shadow: 0 0 0 2px rgba(0,229,255,.08);
+}
+
+input[type=file] { 
+  padding: 5px 9px; 
+  cursor: pointer; 
+  font-size: 10px;
+}
+
+input[type=number] { -moz-appearance: textfield; }
+input[type=number]::-webkit-outer-spin-button,
+input[type=number]::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+
+select { 
+  cursor: pointer; 
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6'%3E%3Cpath d='M0 0l5 6 5-6z' fill='%23637080'/%3E%3C/svg%3E"); 
+  background-repeat: no-repeat; 
+  background-position: right 8px center; 
+  padding-right: 24px; 
+  font-size: 10px;
+}
+
+/* ══ BUTTONS ══ */
+.btn {
+  width: 100%;
+  padding: 8px 10px;
+  border: none; border-radius: var(--r);
+  font-family: var(--mono);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center; gap: 6px;
+  transition: all .2s;
+  margin-bottom: 4px;
+  position: relative;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+.btn::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: rgba(255,255,255,0);
+  transition: background .15s;
+}
+
+.btn:hover::after { background: rgba(255,255,255,.05); }
+.btn:active { transform: scale(.98); }
+.btn:disabled { opacity: .3; cursor: not-allowed; }
+.btn:last-child { margin-bottom: 0; }
+
+.btn-amber { background: rgba(255,183,0,.12); color: var(--amber); border: 1px solid rgba(255,183,0,.35); }
+.btn-amber:not(:disabled):hover { box-shadow: var(--ga); }
+.btn-red   { background: rgba(255,34,68,.1);  color: var(--red);   border: 1px solid rgba(255,34,68,.3); }
+.btn-red:not(:disabled):hover { box-shadow: var(--gr); }
+.btn-cyan  { background: rgba(0,229,255,.08); color: var(--cyan);  border: 1px solid rgba(0,229,255,.25); }
+.btn-cyan:not(:disabled):hover { box-shadow: var(--gc); }
+.btn-green { background: rgba(57,255,20,.08); color: var(--green); border: 1px solid rgba(57,255,20,.25); }
+.btn-green:not(:disabled):hover { box-shadow: var(--gg); }
+.btn-ghost { background: transparent; color: var(--txt2); border: 1px solid var(--bg4); }
+.btn-ghost:not(:disabled):hover { color: var(--txt); border-color: var(--txt2); }
+
+/* ══ SPEED PRESETS ══ */
+.speed-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4px;
+  margin-bottom: 8px;
+}
+
+.spd-btn {
+  padding: 6px 5px;
+  border: 1px solid var(--bg4);
+  border-radius: var(--r);
+  background: var(--bg2);
+  color: var(--txt2);
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: .3px;
+  cursor: pointer;
+  transition: all .2s;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.spd-btn .spd-name { font-weight: 700; font-size: 10px; display: block; }
+.spd-btn .spd-info { font-size: 8px; color: var(--txt3); display: block; margin-top: 1px; }
+
+.spd-btn:hover { border-color: var(--amber2); color: var(--amber); }
+.spd-btn.on { border-color: var(--amber); color: var(--amber); background: rgba(255,183,0,.08); box-shadow: var(--ga); }
+
+/* ══ SPEED METER ══ */
+.spd-meter { margin-top: 6px; }
+.spd-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; }
+.spd-label { font-size: 8px; letter-spacing: 1.2px; color: var(--txt3); text-transform: uppercase; }
+.spd-val { font-size: 12px; font-weight: 700; color: var(--amber); }
+.spd-bar-bg { height: 2px; background: var(--bg3); border-radius: 1px; overflow: hidden; }
+.spd-bar-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--amber2), var(--amber)); border-radius: 1px; transition: width .4s ease; box-shadow: var(--ga); }
+
+/* ══ MINI LIST ══ */
+.mini-list { list-style: none; max-height: 100px; overflow-y: auto; }
+.mini-list li {
+  padding: 4px 7px; border-radius: var(--r);
+  font-size: 10px; color: var(--txt2);
+  cursor: pointer; overflow: hidden;
+  text-overflow: ellipsis; white-space: nowrap;
+  transition: background .1s, color .1s;
+}
+.mini-list li:hover { background: var(--bg3); color: var(--txt); }
+
+/* ══ BLOB PANEL ══ */
+.blob-panel {
+  display: none;
+  background: rgba(57,255,20,.05);
+  border: 1px solid rgba(57,255,20,.2);
+  border-radius: var(--r);
+  padding: 8px;
+  margin-top: 8px;
+}
+
+.blob-url {
+  color: var(--green);
+  font-size: 9px;
+  word-break: break-all;
+  line-height: 1.4;
+  display: block;
+  margin-bottom: 6px;
+  text-decoration: none;
+}
+
+/* ══ MAIN PANEL ══ */
+.main-panel {
+  display: flex; flex-direction: column;
+  min-height: 0; overflow: hidden;
+}
+
+/* ══ STATS + TIMER BAR ══ */
+.stats-bar {
+  background: var(--bg1);
+  border-bottom: 1px solid rgba(0,229,255,.08);
+  padding: 8px 12px;
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  flex-shrink: 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+.stat-item {
+  display: flex; flex-direction: column;
+  align-items: center;
+  padding: 0 12px;
+  border-right: 1px solid var(--bg3);
+  flex-shrink: 0;
+}
+
+.stat-item:first-child { padding-left: 0; }
+.stat-item:last-child { border-right: none; }
+
+.stat-lbl {
+  font-size: 7px; letter-spacing: 1.5px;
+  color: var(--txt3); text-transform: uppercase;
+  margin-bottom: 1px;
+  white-space: nowrap;
+}
+
+.stat-val {
+  font-family: var(--head);
+  font-size: 18px; font-weight: 700;
+  line-height: 1;
+}
+
+.sv-total  { color: var(--cyan);  text-shadow: var(--gc); }
+.sv-ok     { color: var(--green); text-shadow: var(--gg); }
+.sv-dead   { color: var(--red);   text-shadow: var(--gr); }
+.sv-rem    { color: var(--amber); text-shadow: var(--ga); }
+
+/* ══ TIMER ══ */
+.timer-wrap {
+  margin-left: auto;
+  display: flex; align-items: center; gap: 10px;
+  flex-shrink: 0;
+}
+
+.timer-block {
+  display: flex; flex-direction: column; align-items: flex-end;
+}
+
+.timer-label {
+  font-size: 7px; letter-spacing: 1.5px;
+  color: var(--txt3); text-transform: uppercase;
+  margin-bottom: 0;
+}
+
+.timer-digits {
+  font-family: var(--head);
+  font-size: 20px; font-weight: 700;
+  color: var(--amber);
+  text-shadow: var(--ga);
+  letter-spacing: 1px;
+  font-variant-numeric: tabular-nums;
+  line-height: 1;
+}
+
+.eta-val {
+  font-size: 9px; color: var(--txt2);
+  letter-spacing: .5px;
+  text-align: right;
+  white-space: nowrap;
+}
+
+.timer-info-btn {
+  width: 26px; height: 26px;
+  border-radius: 50%;
+  background: rgba(0,229,255,.08);
+  border: 1px solid rgba(0,229,255,.25);
+  color: var(--cyan);
+  font-family: var(--head);
+  font-size: 12px; font-weight: 700;
+  cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .2s; flex-shrink: 0;
+}
+
+.timer-info-btn:hover { background: rgba(0,229,255,.16); box-shadow: var(--gc); }
+
+/* ══ PROGRESS BAR ══ */
+.prog-wrap {
+  height: 2px; background: var(--bg3);
+  flex-shrink: 0; display: none;
+  position: relative;
+}
+
+.prog-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--amber2), var(--amber), var(--cyan));
+  transition: width .3s linear;
+  box-shadow: 0 0 8px var(--amber);
+}
+
+/* ══ FILTER BAR ══ */
+.filter-bar {
+  background: var(--bg1);
+  border-bottom: 1px solid rgba(0,229,255,.06);
+  padding: 6px 12px;
+  display: flex; gap: 6px; align-items: center;
+  flex-shrink: 0; flex-wrap: wrap;
+}
+
+.filter-chip {
+  padding: 4px 10px;
+  border: 1px solid var(--bg4);
+  border-radius: 18px;
+  background: none;
+  color: var(--txt2);
+  font-family: var(--mono);
+  font-size: 9px; letter-spacing: .3px;
+  cursor: pointer; white-space: nowrap;
+  transition: all .15s;
+}
+
+.filter-chip:hover { color: var(--txt); border-color: var(--txt3); }
+.filter-chip.on { color: var(--amber); border-color: var(--amber); background: rgba(255,183,0,.06); }
+
+.filter-search {
+  flex: 1; min-width: 120px; max-width: 240px;
+  padding: 4px 8px !important; font-size: 10px !important;
+}
+
+/* ══ CONTENT PANES ══ */
+.pane { display: none; flex: 1; flex-direction: column; min-height: 0; overflow: hidden; }
+.pane.on { display: flex; }
+
+/* ══ TABLE ══ */
+.tbl-scroll {
+  flex: 1; overflow-y: auto; overflow-x: auto;
+  min-height: 0;
+  -webkit-overflow-scrolling: touch;
+}
+
+table { width: 100%; border-collapse: collapse; min-width: 500px; }
+
+thead th {
+  background: var(--bg2);
+  padding: 7px 10px;
+  font-size: 8px; font-weight: 700;
+  letter-spacing: 1.5px; color: var(--txt3);
+  text-transform: uppercase;
+  text-align: left;
+  position: sticky; top: 0; z-index: 2;
+  border-bottom: 1px solid var(--bg3);
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+}
+
+thead th.sort-asc::after { content: ' ▲'; font-size: 7px; margin-left: 3px; }
+thead th.sort-desc::after { content: ' ▼'; font-size: 7px; margin-left: 3px; }
+
+tbody tr {
+  border-bottom: 1px solid var(--bg2);
+  transition: background .1s;
+}
+
+tbody tr:hover { background: var(--bg2); }
+
+td {
+  padding: 6px 10px; font-size: 10px;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 160px;
+}
+
+.td-logo { width: 42px; padding: 3px 10px; max-width: 42px; text-align: center; }
+.td-actions { width: 90px; max-width: 90px; }
+
+.ch-logo {
+  width: 24px; height: 24px;
+  object-fit: cover; border-radius: 2px;
+  background: var(--bg2); display: block;
+  margin: 0 auto;
+}
+
+/* ══ STATUS BADGES ══ */
+.badge {
+  display: inline-flex; align-items: center; gap: 3px;
+  padding: 2px 7px; border-radius: 2px;
+  font-size: 9px; font-weight: 700; letter-spacing: .3px;
+}
+
+.b-ok  { background: rgba(57,255,20,.08); color: var(--green); border: 1px solid rgba(57,255,20,.2); }
+.b-err { background: rgba(255,34,68,.08); color: var(--red);   border: 1px solid rgba(255,34,68,.2); }
+.b-chk { background: rgba(255,183,0,.06); color: var(--amber); border: 1px solid rgba(255,183,0,.2); animation: blink 1s ease-in-out infinite; }
+
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:.4} }
+
+/* ══ TABLE ACTION BUTTONS ══ */
+.act-btns { display: flex; gap: 3px; justify-content: center; }
+
+.act-btn {
+  width: 24px; height: 24px;
+  border: none; border-radius: 2px;
+  display: flex; align-items: center; justify-content: center;
+  cursor: pointer; font-size: 11px;
+  transition: all .15s; flex-shrink: 0;
+}
+
+.act-btn:hover { transform: scale(1.15); }
+.ab-play { background: rgba(0,229,255,.12); color: var(--cyan); border: 1px solid rgba(0,229,255,.25); }
+.ab-ext  { background: rgba(57,255,20,.08); color: var(--green); border: 1px solid rgba(57,255,20,.2); }
+.ab-fav  { background: rgba(255,183,0,.08); color: var(--amber); border: 1px solid rgba(255,183,0,.2); }
+.ab-fav.on { background: rgba(255,183,0,.2); }
+.ab-copy { background: rgba(192,68,255,.08); color: var(--purple); border: 1px solid rgba(192,68,255,.2); }
+
+/* ══ PAGER ══ */
+.pager {
+  background: var(--bg1);
+  border-top: 1px solid var(--bg3);
+  padding: 6px 12px;
+  display: flex; align-items: center; gap: 6px;
+  flex-shrink: 0; flex-wrap: wrap;
+}
+
+.pg-btn {
+  padding: 4px 10px;
+  background: var(--bg2); border: 1px solid var(--bg4);
+  border-radius: var(--r); color: var(--txt2);
+  font-family: var(--mono); font-size: 10px;
+  cursor: pointer; transition: all .15s;
+}
+
+.pg-btn:hover:not(:disabled) { border-color: var(--cyan2); color: var(--cyan); }
+.pg-btn:disabled { opacity: .3; cursor: not-allowed; }
+.pg-info { font-size: 9px; color: var(--txt2); flex: 1; text-align: center; white-space: nowrap; }
+.pg-size { padding: 4px 7px; background: var(--bg2); border: 1px solid var(--bg4); border-radius: var(--r); color: var(--txt2); font-family: var(--mono); font-size: 10px; width: auto; }
+
+/* ══ COMPARE AREA ══ */
+.compare-area { padding: 12px; display: flex; flex-direction: column; gap: 8px; overflow-y: auto; }
+
+/* ══ VIDEO MINI PLAYER ══ */
+#miniPlayer {
+  position: fixed;
+  bottom: 15px; right: 15px;
+  width: 340px;
+  background: var(--bg);
+  border: 1px solid var(--amber);
+  border-radius: var(--r2);
+  box-shadow: var(--ga), 0 20px 60px rgba(0,0,0,.8);
+  z-index: 500;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+  resize: both;
+  min-width: 260px; min-height: 180px;
+  max-width: 95vw; max-height: 80vh;
+  touch-action: none;
+}
+
+#miniPlayer.show { display: flex; }
+
+.mini-hdr {
+  background: var(--bg2);
+  padding: 6px 10px;
+  display: flex; align-items: center; gap: 6px;
+  border-bottom: 1px solid var(--bg3);
+  cursor: move;
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.mini-title {
+  font-size: 10px; color: var(--amber);
+  flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+
+.mini-ctrl { display: flex; gap: 4px; }
+
+.mini-btn {
+  width: 20px; height: 20px;
+  border: 1px solid var(--bg4);
+  border-radius: 2px; background: var(--bg3);
+  color: var(--txt2); font-size: 10px;
+  cursor: pointer; display: flex;
+  align-items: center; justify-content: center;
+  transition: all .15s;
+  flex-shrink: 0;
+}
+
+.mini-btn:hover { border-color: var(--red); color: var(--red); }
+
+#miniVideo {
+  width: 100%;
+  aspect-ratio: 16/9;
+  background: #000;
+  display: block;
+  object-fit: contain;
+}
+
+.mini-footer {
+  padding: 5px 10px;
+  font-size: 9px; color: var(--txt3);
+  display: flex; align-items: center; gap: 6px;
+  background: var(--bg2);
+  flex-shrink: 0;
+  flex-wrap: wrap;
+}
+
+.mini-status { flex: 1; min-width: 80px; }
+.mini-status.ok   { color: var(--green); }
+.mini-status.err  { color: var(--red); }
+.mini-status.load { color: var(--amber); animation: blink 1s infinite; }
+
+.mini-footer .mini-btn {
+  width: auto; padding: 2px 6px; font-size: 9px;
+}
+
+/* ══ FULLSCREEN VIDEO ══ */
+#fullPlayer {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.95);
+  z-index: 600;
+  display: none;
+  align-items: center; justify-content: center;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+#fullPlayer.show { display: flex; }
+
+.fp-box {
+  position: relative;
+  width: 95%; max-width: 980px;
+  background: #000;
+  border: 1px solid var(--amber);
+  border-radius: var(--r2);
+  box-shadow: var(--ga);
+}
+
+.fp-hdr {
+  display: flex; align-items: center;
+  padding: 7px 12px;
+  background: var(--bg2);
+  border-bottom: 1px solid var(--bg3);
+}
+
+.fp-title { color: var(--amber); font-size: 11px; flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+.fp-close {
+  width: 26px; height: 26px;
+  background: rgba(255,34,68,.15);
+  border: 1px solid rgba(255,34,68,.3);
+  border-radius: 2px; color: var(--red);
+  font-size: 13px; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  transition: all .15s;
+}
+
+.fp-close:hover { background: var(--red); color: #fff; }
+
+#fullVideo {
+  width: 100%; height: auto;
+  max-height: 85vh; display: block;
+}
+
+/* ══ MODAL ══ */
+#modal {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.75);
+  z-index: 700;
+  display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  padding: 10px;
+}
+
+#modal.show { display: flex; }
+
+.modal-box {
+  background: var(--bg2);
+  border: 1px solid var(--bg4);
+  border-radius: var(--r2);
+  padding: 20px 24px;
+  max-width: 400px; width: 100%;
+  text-align: center;
+  animation: popIn .2s ease;
+  white-space: pre-line;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@keyframes popIn { from{transform:scale(.9);opacity:0} to{transform:scale(1);opacity:1} }
+
+.modal-title {
+  font-family: var(--head);
+  font-size: 16px; font-weight: 700;
+  letter-spacing: 1.5px; margin-bottom: 10px;
+}
+
+.mt-ok  { color: var(--green); text-shadow: var(--gg); }
+.mt-err { color: var(--red);   text-shadow: var(--gr); }
+.mt-inf { color: var(--cyan);  text-shadow: var(--gc); }
+.mt-amb { color: var(--amber); text-shadow: var(--ga); }
+
+.modal-msg { font-size: 11px; color: var(--txt2); line-height: 1.6; margin-bottom: 18px; }
+
+/* ══ INFO MODAL ══ */
+.info-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 16px;
+  text-align: left;
+}
+
+.info-cell {
+  background: var(--bg3);
+  border: 1px solid var(--bg4);
+  border-radius: var(--r);
+  padding: 8px 10px;
+}
+
+.info-cell-lbl {
+  font-size: 8px; letter-spacing: 1.2px;
+  color: var(--txt3); text-transform: uppercase;
+  margin-bottom: 3px;
+}
+
+.info-cell-val {
+  font-family: var(--head);
+  font-size: 16px; font-weight: 700;
+}
+
+/* ══ TEST MODAL ══ */
+.test-channels { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; text-align: left; }
+
+.test-ch-row {
+  background: var(--bg3);
+  border: 1px solid var(--bg4);
+  border-radius: var(--r);
+  padding: 6px 8px;
+  display: flex; align-items: center; gap: 8px;
+}
+
+.test-ch-name { flex: 1; font-size: 10px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.test-ch-st { font-size: 9px; }
+
+/* ══ SETTINGS PANEL ══ */
+.settings-row {
+  display: flex; align-items: center; gap: 8px;
+  margin-bottom: 6px; flex-wrap: wrap;
+}
+
+.settings-row label {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 9px; color: var(--txt2);
+  cursor: pointer;
+}
+
+.settings-row input[type="checkbox"] {
+  width: 14px; height: 14px;
+  accent-color: var(--cyan);
+  cursor: pointer;
+}
+
+.settings-row .num-input {
+  width: 70px !important;
+  padding: 4px 6px !important;
+  font-size: 10px !important;
+}
+
+/* ══ CORS WARNING ══ */
+.cors-warning {
+  background: rgba(255,34,68,.08);
+  border: 1px solid rgba(255,34,68,.3);
+  border-radius: var(--r);
+  padding: 8px 10px;
+  margin: 8px 0;
+  font-size: 9px;
+  color: var(--red);
+  line-height: 1.4;
+}
+
+.cors-warning strong { color: var(--amber); }
+
+/* ══ SCROLLBAR ══ */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: var(--bg4); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--txt3); }
+
+/* ══ MOBILE ══ */
+@media(max-width:768px) {
+  :root {
+    --header-h: 48px;
+    --sidebar-w: 100%;
+  }
+  
+  html { font-size: 12px; }
+  
+  header { padding: 0 8px; }
+  .logo-mark { font-size: 17px; letter-spacing: 1px; }
+  .hdr-nav { display: none; }
+  
+  .app { grid-template-columns: 1fr; }
+  .sidebar { 
+    position: static !important; 
+    height: auto !important; 
+    border-right: none;
+    border-bottom: 1px solid rgba(0,229,255,.08);
+  }
+  
+  .sb-section { padding: 10px 10px; }
+  .speed-grid { grid-template-columns: 1fr; }
+  
+  .stats-bar { padding: 6px 8px; gap: 0; }
+  .stat-item { padding: 0 8px; }
+  .stat-val { font-size: 15px; }
+  .timer-digits { font-size: 17px; }
+  
+  .filter-bar { padding: 5px 8px; }
+  .filter-chip { padding: 3px 8px; font-size: 8px; }
+  
+  table { min-width: 420px; }
+  td { padding: 5px 8px; font-size: 9px; }
+  .td-logo { width: 38px; }
+  .ch-logo { width: 22px; height: 22px; }
+  
+  #miniPlayer { 
+    width: calc(100vw - 20px); 
+    right: 10px; bottom: 10px;
+    min-width: auto;
+  }
+  
+  .info-grid { grid-template-columns: 1fr; }
+  
+  .modal-box { padding: 16px 20px; }
+  .modal-title { font-size: 15px; }
+  .modal-msg { font-size: 10px; }
+}
+
+@media(max-width:480px) {
+  .stat-item:nth-child(n+4) { display: none; }
+  .timer-wrap { flex-direction: column; gap: 3px; align-items: flex-end; }
+  .pg-info { font-size: 8px; }
+  .act-btn { width: 22px; height: 22px; font-size: 10px; }
+  
+  /* Hide less important columns on very small screens */
+  .td-actions, .td-logo { display: none; }
+  table { min-width: 280px; }
+  td:nth-child(2) { max-width: 120px; }
+  td:nth-child(3) { display: none; }
+}
+
+/* ══ PRINT ══ */
+@media print {
+  header, .sidebar, .filter-bar, .pager, #miniPlayer, #fullPlayer, #modal { display: none !important; }
+  .app { grid-template-columns: 1fr !important; }
+  .main-panel { display: block !important; }
+  table { font-size: 9px; }
+}
+</style>
+</head>
+<body>
+
+<!-- ══ VIDEO: MINI PLAYER ══ -->
+<div id="miniPlayer">
+  <div class="mini-hdr" id="miniDragHdr">
+    <span class="mini-title" id="miniTitle">—</span>
+    <div class="mini-ctrl">
+      <button class="mini-btn" id="miniExpand" title="Развернуть">⛶</button>
+      <button class="mini-btn" id="miniClose" title="Закрыть (ESC)">✕</button>
+    </div>
+  </div>
+  <video id="miniVideo" playsinline autoplay controls crossorigin="anonymous" preload="metadata"></video>
+  <div class="mini-footer">
+    <span class="mini-status load" id="miniStatus">Загрузка...</span>
+    <button class="mini-btn" id="miniCopy" title="Скопировать URL">📋</button>
+    <button class="mini-btn" id="miniExt" title="Открыть во внешнем плеере">↗</button>
+  </div>
+</div>
+
+<!-- ══ VIDEO: FULL PLAYER ══ -->
+<div id="fullPlayer">
+  <div class="fp-box">
+    <div class="fp-hdr">
+      <span class="fp-title" id="fpTitle">—</span>
+      <button class="fp-close" id="fpClose" title="Закрыть (ESC)">✕</button>
+    </div>
+    <video id="fullVideo" playsinline autoplay controls crossorigin="anonymous"></video>
+  </div>
+</div>
+
+<!-- ══ MODAL ══ -->
+<div id="modal">
+  <div class="modal-box" id="modalBox">
+    <div class="modal-title" id="modalTitle">—</div>
+    <div class="modal-msg" id="modalMsg"></div>
+    <div id="modalExtra"></div>
+    <button class="btn btn-amber" id="modalOk" style="width:auto;padding:7px 28px;margin:0 auto">OK</button>
+  </div>
+</div>
+
+<!-- ══ HEADER ══ -->
+<header>
+  <div class="logo-mark">INDEX<sup>33</sup></div>
+  <div class="hdr-sep"></div>
+  <nav class="hdr-nav">
+    <button class="hdr-tab on" data-tab="results"  data-en="Results"  data-ru="Результаты">Результаты</button>
+    <button class="hdr-tab"   data-tab="favorites" data-en="Favorites" data-ru="Избранное">Избранное</button>
+    <button class="hdr-tab"   data-tab="compare"   data-en="Compare"   data-ru="Сравнение">Сравнение</button>
+  </nav>
+  <div class="hdr-right">
+    <div class="lang-sw">
+      <button class="lang-btn on" data-lang="ru">RU</button>
+      <button class="lang-btn"    data-lang="en">EN</button>
+    </div>
+  </div>
+</header>
+
+<!-- ══ APP ══ -->
+<div class="app">
+
+<!-- ════ SIDEBAR ════ -->
+<aside class="sidebar">
+
+  <!-- SOURCE -->
+  <div class="sb-section">
+    <div class="sb-label" data-en="Source" data-ru="Источник">Источник</div>
+    <div class="fld">
+      <span class="fld-lbl" data-en="File (M3U/TXT/JSON)" data-ru="Файл (M3U/TXT/JSON)">Файл (M3U/TXT/JSON)</span>
+      <input type="file" id="fileInput" accept=".m3u,.m3u8,.txt,.json">
+    </div>
+    <div class="fld">
+      <span class="fld-lbl" data-en="Playlist URL" data-ru="URL плейлиста">URL плейлиста</span>
+      <input type="text" id="m3uUrl" placeholder="https://...playlist.m3u">
+    </div>
+  </div>
+
+  <!-- SPEED -->
+  <div class="sb-section">
+    <div class="sb-label" data-en="Speed Mode" data-ru="Режим скорости">Режим скорости</div>
+    <div class="speed-grid">
+      <button class="spd-btn" data-t="500"  data-c="200" data-key="ultra">
+        <span class="spd-name">⚡ ULTRA</span>
+        <span class="spd-info" data-en="200 thr / 0.5s" data-ru="200 потоков / 0.5с">200 потоков / 0.5с</span>
+      </button>
+      <button class="spd-btn on" data-t="1500" data-c="100" data-key="turbo">
+        <span class="spd-name">⚡ TURBO</span>
+        <span class="spd-info" data-en="100 thr / 1.5s" data-ru="100 потоков / 1.5с">100 потоков / 1.5с</span>
+      </button>
+      <button class="spd-btn" data-t="3000" data-c="50" data-key="normal">
+        <span class="spd-name">▶ NORMAL</span>
+        <span class="spd-info" data-en="50 thr / 3s" data-ru="50 потоков / 3с">50 потоков / 3с</span>
+      </button>
+      <button class="spd-btn" data-t="7000" data-c="20" data-key="safe">
+        <span class="spd-name">🛡 SAFE</span>
+        <span class="spd-info" data-en="20 thr / 7s" data-ru="20 потоков / 7с">20 потоков / 7с</span>
+      </button>
+    </div>
+    <div class="fld">
+      <span class="fld-lbl" data-en="Custom timeout (ms)" data-ru="Таймаут (мс)">Таймаут (мс)</span>
+      <select id="timeoutSel">
+        <option value="500">500 мс</option>
+        <option value="1000" selected>1000 мс</option>
+        <option value="2000">2000 мс</option>
+        <option value="3000">3000 мс</option>
+        <option value="5000">5000 мс</option>
+        <option value="7000">7000 мс</option>
+        <option value="10000">10000 мс</option>
+        <option value="15000">15000 мс</option>
+        <option value="30000">30000 мс</option>
+      </select>
+    </div>
+    <div class="fld">
+      <span class="fld-lbl" data-en="Parallel threads" data-ru="Параллельных потоков">Параллельных потоков</span>
+      <select id="concurrencySel">
+        <option value="20">20</option>
+        <option value="50">50</option>
+        <option value="100">100</option>
+        <option value="150" selected>150</option>
+        <option value="200">200</option>
+        <option value="300">300</option>
+        <option value="500">500</option>
+        <option value="1000">1000 ⚠️</option>
+      </select>
+      <span style="font-size:8px;color:var(--txt3);margin-top:2px;display:block" data-en="⚠️ Browser limits ~6 conn/domain" data-ru="⚠️ Браузер ограничивает ~6 подключений/домен">⚠️ Браузер ограничивает ~6 подключений/домен</span>
+    </div>
+    <div class="spd-meter">
+      <div class="spd-row">
+        <span class="spd-label" data-en="Speed" data-ru="Скорость">Скорость</span>
+        <span class="spd-val" id="spdVal">— ch/s</span>
+      </div>
+      <div class="spd-bar-bg"><div class="spd-bar-fill" id="spdBar"></div></div>
+    </div>
+  </div>
+
+  <!-- ADVANCED SETTINGS -->
+  <div class="sb-section">
+    <div class="sb-label" data-en="Advanced" data-ru="Дополнительно">Дополнительно</div>
+    
+    <div class="settings-row">
+      <label>
+        <input type="checkbox" id="useHeadCheck" checked>
+        <span class="fld-lbl" data-en="Use HEAD request" data-ru="HEAD запрос">HEAD запрос</span>
+      </label>
+      <span class="hint" title="HEAD быстрее, но некоторые серверы блокируют">❓</span>
+    </div>
+    
+    <div class="settings-row">
+      <label>
+        <input type="checkbox" id="headGetFallback" checked>
+        <span class="fld-lbl" data-en="HEAD→GET fallback" data-ru="HEAD→GET если ошибка">HEAD→GET fallback</span>
+      </label>
+    </div>
+    
+    <div class="settings-row">
+      <label>
+        <input type="checkbox" id="useRangeCheck" checked>
+        <span class="fld-lbl" data-en="Use Range header" data-ru="Range: bytes=0-1023">Range header</span>
+      </label>
+    </div>
+    
+    <div class="settings-row">
+      <label>
+        <input type="checkbox" id="useCorsProxy">
+        <span class="fld-lbl" data-en="Use CORS proxy" data-ru="CORS прокси">CORS прокси</span>
+      </label>
+    </div>
+    
+    <div class="fld" id="proxyUrlFld" style="display:none">
+      <span class="fld-lbl" data-en="Proxy URL" data-ru="URL прокси">URL прокси</span>
+      <input type="text" id="proxyUrl" placeholder="https://your-proxy.com/?url=" value="https://api.allorigins.win/raw?url=">
+      <span style="font-size:8px;color:var(--txt3)" data-en="Proxy must return raw stream" data-ru="Прокси должен возвращать сырой поток">Прокси должен возвращать сырой поток</span>
+    </div>
+    
+    <div class="settings-row">
+      <label>
+        <input type="checkbox" id="rotateUA">
+        <span class="fld-lbl" data-en="Rotate User-Agent" data-ru="Ротация User-Agent">Ротация UA</span>
+      </label>
+    </div>
+    
+    <div class="settings-row">
+      <label>
+        <input type="checkbox" id="checkOnly2KB" checked>
+        <span class="fld-lbl" data-en="Check only 2KB" data-ru="Проверять только 2КБ">Проверять 2КБ</span>
+      </label>
+    </div>
+    
+    <div class="cors-warning" id="corsWarning" style="display:none">
+      <strong data-en="CORS Warning" data-ru="⚠️ CORS">⚠️ CORS</strong>: 
+      <span data-en="Many IPTV streams block browser requests. Use proxy or external player." data-ru="Многие потоки блокируют запросы из браузера. Используйте прокси или внешний плеер.">Многие потоки блокируют запросы из браузера. Используйте прокси или внешний плеер.</span>
+    </div>
+  </div>
+
+  <!-- CONTROLS -->
+  <div class="sb-section">
+    <div class="sb-label" data-en="Controls" data-ru="Управление">Управление</div>
+    <button class="btn btn-amber" id="btnCheck">▶ <span data-en="Start Check" data-ru="Запустить проверку">Запустить проверку</span></button>
+    <button class="btn btn-red"   id="btnStop"   disabled>■ <span data-en="Stop" data-ru="Стоп">Стоп</span></button>
+    <button class="btn btn-cyan"  id="btnRefresh" disabled>↻ <span data-en="Refresh" data-ru="Обновить">Обновить</span></button>
+    <button class="btn btn-ghost" id="btnTest">🧪 <span data-en="Quick Test" data-ru="Быстрый тест">Быстрый тест</span></button>
+    <button class="btn btn-ghost" id="btnClear">✕ <span data-en="Clear" data-ru="Очистить">Очистить</span></button>
+  </div>
+
+  <!-- EXPORT -->
+  <div class="sb-section">
+    <div class="sb-label" data-en="Export" data-ru="Экспорт">Экспорт</div>
+    <div class="fld">
+      <span class="fld-lbl" data-en="Format" data-ru="Формат">Формат</span>
+      <select id="exportFmt">
+        <option value="m3u">M3U playlist</option>
+        <option value="txt">TXT (M3U)</option>
+        <option value="json">JSON</option>
+      </select>
+    </div>
+    <button class="btn btn-green" id="btnExport" disabled>⬇ <span data-en="Download" data-ru="Скачать">Скачать</span></button>
+    <button class="btn btn-ghost" id="btnPdf">📄 PDF</button>
+
+    <div class="blob-panel" id="blobPanel">
+      <span class="fld-lbl" data-en="Playlist link (VLC/Kodi)" data-ru="Ссылка (VLC/Kodi)">Ссылка (VLC/Kodi)</span>
+      <a class="blob-url" id="blobLink" href="#" target="_blank">—</a>
+      <button class="btn btn-ghost" id="btnCopyBlob" style="margin-bottom:4px;font-size:9px">📋 <span data-en="Copy" data-ru="Копировать">Копировать</span></button>
+      <button class="btn btn-ghost" id="btnRevokeBlob" style="font-size:9px">✕ <span data-en="Delete" data-ru="Удалить">Удалить</span></button>
+    </div>
+  </div>
+
+  <!-- HISTORY -->
+  <div class="sb-section">
+    <div class="sb-label" data-en="History" data-ru="История">История</div>
+    <ul class="mini-list" id="histList"></ul>
+  </div>
+
+  <!-- GROUPS -->
+  <div class="sb-section">
+    <div class="sb-label" data-en="Groups" data-ru="Группы">Группы</div>
+    <ul class="mini-list" id="groupsList"></ul>
+  </div>
+
+</aside>
+
+<!-- ════ MAIN ════ -->
+<div class="main-panel">
+
+  <!-- STATS + TIMER -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-lbl" data-en="Total" data-ru="Всего">Всего</span>
+      <span class="stat-val sv-total" id="sTot">0</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-lbl" data-en="Working" data-ru="Рабочих">Рабочих</span>
+      <span class="stat-val sv-ok" id="sOk">0</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-lbl" data-en="Dead" data-ru="Мёртвых">Мёртвых</span>
+      <span class="stat-val sv-dead" id="sDead">0</span>
+    </div>
+    <div class="stat-item" id="remItem" style="display:none">
+      <span class="stat-lbl" data-en="Left" data-ru="Осталось">Осталось</span>
+      <span class="stat-val sv-rem" id="sRem">0</span>
+    </div>
+
+    <div class="timer-wrap">
+      <div class="timer-block">
+        <span class="timer-label" data-en="Elapsed" data-ru="Прошло">Прошло</span>
+        <span class="timer-digits" id="timerEl">00:00:00</span>
+        <span class="eta-val" id="etaEl">—</span>
+      </div>
+      <button class="timer-info-btn" id="btnInfo" title="Info">i</button>
+    </div>
+  </div>
+
+  <!-- PROGRESS -->
+  <div class="prog-wrap" id="progWrap"><div class="prog-fill" id="progFill"></div></div>
+
+  <!-- FILTER BAR -->
+  <div class="filter-bar" id="filterBarEl">
+    <button class="filter-chip on" data-st="all"         data-en="ALL"     data-ru="ВСЕ">ВСЕ</button>
+    <button class="filter-chip"    data-st="Available"   data-en="✔ LIVE"  data-ru="✔ РАБОЧИЕ">✔ РАБОЧИЕ</button>
+    <button class="filter-chip"    data-st="Unavailable" data-en="✕ DEAD"  data-ru="✕ МЁРТВЫЕ">✕ МЁРТВЫЕ</button>
+    <input type="text" class="filter-search" id="srchIn" placeholder="🔍 Search / Поиск...">
+  </div>
+
+  <!-- PANE: RESULTS -->
+  <div class="pane on" id="pane-results">
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr>
+          <th class="td-logo">LOGO</th>
+          <th style="min-width:120px" data-en="NAME" data-ru="НАЗВАНИЕ" data-sort="name">НАЗВАНИЕ</th>
+          <th style="min-width:90px" data-en="GROUP" data-ru="ГРУППА" data-sort="group">ГРУППА</th>
+          <th style="width:100px"     data-en="STATUS" data-ru="СТАТУС" data-sort="status">СТАТУС</th>
+          <th class="td-actions"      data-en="ACTIONS" data-ru="ДЕЙСТВИЯ">ДЕЙСТВИЯ</th>
+        </tr></thead>
+        <tbody id="resTbody"></tbody>
+      </table>
+    </div>
+    <div class="pager">
+      <button class="pg-btn" id="pgPrev">◀</button>
+      <span class="pg-info" id="pgInfo">— / —</span>
+      <button class="pg-btn" id="pgNext">▶</button>
+      <select class="pg-size" id="pgSize">
+        <option value="50">50</option>
+        <option value="100" selected>100</option>
+        <option value="250">250</option>
+        <option value="500">500</option>
+      </select>
+      <span style="font-size:9px;color:var(--txt3)" id="pgCount"></span>
+    </div>
+  </div>
+
+  <!-- PANE: FAVORITES -->
+  <div class="pane" id="pane-favorites">
+    <div class="tbl-scroll">
+      <table>
+        <thead><tr>
+          <th class="td-logo">LOGO</th>
+          <th data-en="NAME" data-ru="НАЗВАНИЕ">НАЗВАНИЕ</th>
+          <th data-en="GROUP" data-ru="ГРУППА">ГРУППА</th>
+          <th data-en="STATUS" data-ru="СТАТУС">СТАТУС</th>
+          <th class="td-actions" data-en="ACTIONS" data-ru="ДЕЙСТВИЯ">ДЕЙСТВИЯ</th>
+        </tr></thead>
+        <tbody id="favTbody"></tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- PANE: COMPARE -->
+  <div class="pane" id="pane-compare">
+    <div class="compare-area">
+      <div class="fld">
+        <span class="fld-lbl" data-en="Second Playlist" data-ru="Второй плейлист">Второй плейлист</span>
+        <input type="file" id="cmpFile" accept=".m3u,.m3u8,.txt,.json">
+      </div>
+      <button class="btn btn-cyan" id="btnCompare" style="width:auto">⚖ <span data-en="Compare" data-ru="Сравнить">Сравнить</span></button>
+      <div class="tbl-scroll" id="cmpWrap" style="display:none;max-height:50vh">
+        <table>
+          <thead><tr>
+            <th data-en="NAME" data-ru="НАЗВАНИЕ">НАЗВАНИЕ</th>
+            <th data-en="GROUP" data-ru="ГРУППА">ГРУППА</th>
+            <th data-en="STATUS" data-ru="СТАТУС">СТАТУС</th>
+            <th data-en="SOURCE" data-ru="ИСТОЧНИК">ИСТОЧНИК</th>
+          </tr></thead>
+          <tbody id="cmpTbody"></tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+</div><!-- /main-panel -->
+</div><!-- /app -->
+
+<script>
+/* ════════════════════════════════════════════════
+   INDEX33 PRO v5.0 — GitHub Pages Optimized
+   Features:
+   • Smart domain-based throttling (bypasses browser limits)
+   • CORS proxy support with custom URL
+   • HEAD/GET fallback, Range requests, UA rotation
+   • Quick preview player for working channels
+   • Fully responsive + touch support
+   • Settings persistence in localStorage
+════════════════════════════════════════════════ */
+
+const DLOGO = 'data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" width="24" height="24"><rect width="24" height="24" rx="2" fill="%230b1018"/><text x="12" y="16" font-size="8" text-anchor="middle" fill="%232a3848" font-family="monospace">TV</text></svg>';
+
+/* ── STATE ── */
+let allResults  = [];
+let filtCache   = [];
+let favorites   = [];
+let stopFlag    = false;
+let hlsMini     = null;
+let hlsFull     = null;
+let curPage     = 1;
+let pgSz        = 100;
+let stFilter    = 'all';
+let srchQ       = '';
+let timerIv     = null;
+let timerT0     = 0;
+let spdIv       = null;
+let lastDone    = 0;
+let lang        = localStorage.getItem('i33_lang') || 'ru';
+let domainQueue = {}; // For smart throttling per domain
+let checkedDomains = new Map(); // Cache domain check results
+
+/* User-Agent pool for rotation */
+const UA_POOL = [
+  'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Safari/605.1.15',
+  'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Mozilla/5.0 (iPhone; CPU iPhone OS 17_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/17.0 Mobile/15E148 Safari/604.1',
+  'Mozilla/5.0 (Linux; Android 14) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.6099.43 Mobile Safari/537.36'
+];
+
+/* Sorting */
+let sortColumn = 'name';
+let sortDirection = 'asc';
+
+/* ══════════════ LANG ══════════════ */
+function t(key) {
+  const translations = {
+    'check_start': {ru: 'Запустить проверку', en: 'Start Check'},
+    'check_stop': {ru: 'Стоп', en: 'Stop'},
+    'check_refresh': {ru: 'Обновить', en: 'Refresh'},
+    'quick_test': {ru: 'Быстрый тест', en: 'Quick Test'},
+    'clear_all': {ru: 'Очистить', en: 'Clear'},
+    'download': {ru: 'Скачать', en: 'Download'},
+    'copy': {ru: 'Копировать', en: 'Copy'},
+    'delete': {ru: 'Удалить', en: 'Delete'},
+    'watch': {ru: 'Смотреть', en: 'Watch'},
+    'external': {ru: 'Внешний плеер', en: 'External player'},
+    'favorite': {ru: 'Избранное', en: 'Favorite'},
+    'copy_url': {ru: 'Копировать URL', en: 'Copy URL'},
+    'loading': {ru: 'Загрузка...', en: 'Loading...'},
+    'playing': {ru: '✔ Воспроизводится', en: '✔ Playing'},
+    'stream_error': {ru: '✕ Ошибка потока', en: '✕ Stream error'},
+    'cannot_play': {ru: '✕ Не воспроизводится', en: '✕ Cannot play'},
+    'cors_warning': {ru: '⚠️ CORS: Многие потоки блокируют запросы из браузера. Используйте прокси.', en: '⚠️ CORS: Many streams block browser requests. Use proxy.'},
+    'browser_limit': {ru: '⚠️ Браузер ограничивает ~6 подключений к одному домену', en: '⚠️ Browser limits ~6 connections per domain'},
+    'proxy_hint': {ru: 'Прокси должен возвращать сырой поток', en: 'Proxy must return raw stream'},
+    'no_working': {ru: 'Нет рабочих каналов', en: 'No working channels'},
+    'check_first': {ru: 'Сначала запустите проверку', en: 'Run check first'},
+    'done': {ru: '✔ ГОТОВО', en: '✔ DONE'},
+    'working': {ru: 'Рабочих', en: 'Working'},
+    'time': {ru: 'Время', en: 'Time'},
+    'dupes_removed': {ru: 'Дублей удалено', en: 'Dupes removed'},
+    'error': {ru: '✕ ОШИБКА', en: '✕ ERROR'},
+    'file_empty': {ru: 'Файл пустой', en: 'File is empty'},
+    'no_links': {ru: 'Ссылки не найдены', en: 'No links found'},
+    'select_source': {ru: 'Выберите файл или введите URL', en: 'Select file or enter URL'},
+    'file_read_error': {ru: 'Ошибка чтения файла', en: 'File read error'},
+    'stopped': {ru: '■ СТОП', en: '■ STOPPED'},
+    'checked': {ru: 'Проверено', en: 'Checked'},
+    'refreshed': {ru: '✔ ОБНОВЛЕНО', en: '✔ REFRESHED'},
+    'export_title': {ru: '⬇ ЭКСПОРТ', en: '⬇ EXPORT'},
+    'channels': {ru: 'рабочих каналов', en: 'working channels'},
+    'blob_ready': {ru: 'Blob-ссылка создана — вставь в VLC → Медиа → Открыть URL', en: 'Blob link ready — paste in VLC → Media → Open URL'},
+    'copied': {ru: '📋 СКОПИРОВАНО', en: '📋 COPIED'},
+    'link_copied': {ru: 'Ссылка в буфере. Вставь в VLC: Медиа → Открыть URL', en: 'Link copied. Paste in VLC: Media → Open URL'},
+    'test_title': {ru: '🧪 БЫСТРЫЙ ТЕСТ', en: '🧪 QUICK TEST'},
+    'test_msg': {ru: '3 случайных рабочих канала.\nНажми ▶ чтобы открыть в мини-плеере:', en: '3 random working channels.\nPress ▶ to open in mini player:'},
+    'compare_title': {ru: '⚖ СРАВНЕНИЕ', en: '⚖ COMPARE'},
+    'first': {ru: 'Первый', en: 'First'},
+    'second': {ru: 'Второй', en: 'Second'},
+    'dupes': {ru: 'Дублей', en: 'Dupes'},
+    'unique': {ru: 'Уникальных', en: 'Unique'},
+    '2nd_playlist': {ru: '2-й плейлист', en: '2nd playlist'},
+    'duplicate': {ru: 'ДУБЛИКАТ', en: 'DUPLICATE'},
+    'unique_item': {ru: 'УНИКАЛЬНЫЙ', en: 'UNIQUE'},
+    'live': {ru: 'РАБОЧИЙ', en: 'LIVE'},
+    'dead': {ru: 'МЁРТВЫЙ', en: 'DEAD'},
+    'checking': {ru: 'ПРОВЕРКА', en: 'CHECK'},
+    'all': {ru: 'ВСЕ', en: 'ALL'},
+    'available': {ru: '✔ РАБОЧИЕ', en: '✔ LIVE'},
+    'unavailable': {ru: '✕ МЁРТВЫЕ', en: '✕ DEAD'},
+    'total': {ru: 'Всего', en: 'Total'},
+    'left': {ru: 'Осталось', en: 'Left'},
+    'elapsed': {ru: 'Прошло', en: 'Elapsed'},
+    'speed': {ru: 'Скорость', en: 'Speed'},
+    'groups': {ru: 'Группы', en: 'Groups'},
+    'favorites': {ru: 'Избранных', en: 'Favorites'},
+    'rate': {ru: 'Скорость', en: 'Rate'},
+    'alive_pct': {ru: '% живых', en: '% alive'}
+  };
+  return translations[key]?.[lang] || key;
+}
+
+function setLang(l) {
+  lang = l;
+  localStorage.setItem('i33_lang', l);
+  
+  // Update all translatable elements
+  document.querySelectorAll('[data-ru][data-en]').forEach(el => {
+    if (el.classList.contains('lang-btn')) return;
+    const key = el.dataset.en?.toLowerCase().replace(/\s+/g, '_') || el.dataset.ru?.toLowerCase().replace(/\s+/g, '_');
+    if (key && t(key)) {
+      if (el.tagName === 'INPUT' && el.type === 'text' && el.placeholder) {
+        // Keep placeholder as is or update if needed
+      } else if (el.tagName !== 'INPUT') {
+        el.textContent = el.getAttribute(`data-${l}`);
+      }
+    }
+  });
+  
+  // Update filter chips
+  document.querySelectorAll('.filter-chip[data-ru][data-en]').forEach(el => {
+    el.textContent = el.getAttribute(`data-${l}`);
+  });
+  
+  // Update speed preset info
+  document.querySelectorAll('.spd-btn .spd-info[data-ru][data-en]').forEach(el => {
+    el.textContent = el.getAttribute(`data-${l}`);
+  });
+  
+  // Update buttons text
+  document.getElementById('btnCheck').innerHTML = `▶ ${t('check_start')}`;
+  document.getElementById('btnStop').innerHTML = `■ ${t('check_stop')}`;
+  document.getElementById('btnRefresh').innerHTML = `↻ ${t('check_refresh')}`;
+  document.getElementById('btnTest').innerHTML = `🧪 ${t('quick_test')}`;
+  document.getElementById('btnClear').innerHTML = `✕ ${t('clear_all')}`;
+  document.getElementById('btnExport').innerHTML = `⬇ ${t('download')}`;
+  
+  // Update search placeholder
+  document.getElementById('srchIn').placeholder = l==='ru' ? '🔍 Поиск...' : '🔍 Search...';
+  
+  // Update language buttons
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('on', b.dataset.lang === l);
+  });
+  
+  // Re-render if needed
+  if (filtCache.length) { rebuildFilter(); renderPage(); }
+  if (favorites.length) renderFav();
+}
+
+document.querySelectorAll('.lang-btn').forEach(b => {
+  b.addEventListener('click', () => setLang(b.dataset.lang));
+});
+
+/* ══════════════ TABS ══════════════ */
+document.querySelectorAll('.hdr-tab').forEach(t => {
+  t.addEventListener('click', () => {
+    document.querySelectorAll('.hdr-tab, .pane').forEach(e => e.classList.remove('on'));
+    t.classList.add('on');
+    const p = document.getElementById('pane-'+t.dataset.tab);
+    if (p) p.classList.add('on');
+    document.getElementById('filterBarEl').style.display =
+      t.dataset.tab === 'results' ? 'flex' : 'none';
+  });
+});
+
+/* ══════════════ SPEED PRESETS ══════════════ */
+document.querySelectorAll('.spd-btn').forEach(b => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.spd-btn').forEach(x => x.classList.remove('on'));
+    b.classList.add('on');
+    document.getElementById('timeoutSel').value     = b.dataset.t;
+    document.getElementById('concurrencySel').value = b.dataset.c;
+    saveSettings();
+  });
+});
+
+/* ══════════════ CORS PROXY TOGGLE ══════════════ */
+document.getElementById('useCorsProxy').addEventListener('change', (e) => {
+  document.getElementById('proxyUrlFld').style.display = e.target.checked ? 'block' : 'none';
+  document.getElementById('corsWarning').style.display = e.target.checked ? 'none' : 'block';
+  saveSettings();
+});
+
+/* ══════════════ TIMER ══════════════ */
+function pad(n) { return String(n).padStart(2,'0'); }
+
+function startTimer() {
+  timerT0 = Date.now();
+  clearInterval(timerIv);
+  timerIv = setInterval(() => {
+    const s  = Math.floor((Date.now()-timerT0)/1000);
+    document.getElementById('timerEl').textContent =
+      `${pad(Math.floor(s/3600))}:${pad(Math.floor((s%3600)/60))}:${pad(s%60)}`;
+    // ETA
+    const done  = allResults.filter(r=>r.status!=='Checking').length;
+    const total = allResults.length;
+    if (done > 5 && total > done) {
+      const rate = done / ((Date.now()-timerT0)/1000);
+      const rem  = Math.ceil((total-done)/rate);
+      document.getElementById('etaEl').textContent =
+        `ETA ${pad(Math.floor(rem/60))}:${pad(rem%60)}`;
+    }
+  }, 1000);
+}
+
+function stopTimer() {
+  clearInterval(timerIv);
+  document.getElementById('etaEl').textContent = lang==='ru'?'✔ готово':'✔ done';
+}
+
+/* ══════════════ SPEED METER ══════════════ */
+function startSpd() {
+  lastDone = 0;
+  spdIv = setInterval(() => {
+    const done = allResults.filter(r=>r.status!=='Checking').length;
+    const delta = done - lastDone; lastDone = done;
+    document.getElementById('spdVal').textContent = delta + ' ch/s';
+    document.getElementById('spdBar').style.width = Math.min(100, delta/2)+'%';
+  }, 1000);
+}
+
+function stopSpd() {
+  clearInterval(spdIv);
+  document.getElementById('spdVal').textContent = '— ch/s';
+  document.getElementById('spdBar').style.width = '0%';
+}
+
+/* ══════════════ PROGRESS ══════════════ */
+function setProg(p) { document.getElementById('progFill').style.width = Math.min(100,p)+'%'; }
+function showProg() { document.getElementById('progWrap').style.display='block'; }
+function hideProg() { document.getElementById('progWrap').style.display='none'; }
+
+/* ══════════════ MODAL ══════════════ */
+function modal(title, msg, type='inf', extraHtml='') {
+  document.getElementById('modalTitle').textContent = title;
+  document.getElementById('modalTitle').className   = 'modal-title mt-'+type;
+  document.getElementById('modalMsg').textContent   = msg;
+  document.getElementById('modalExtra').innerHTML   = extraHtml;
+  document.getElementById('modal').classList.add('show');
+}
+
+document.getElementById('modalOk').addEventListener('click', () => {
+  document.getElementById('modal').classList.remove('show');
+  document.getElementById('modalExtra').innerHTML = '';
+});
+
+/* ══════════════ INFO BUTTON ══════════════ */
+document.getElementById('btnInfo').addEventListener('click', () => {
+  const ok   = allResults.filter(r=>r.status==='Available').length;
+  const dead = allResults.filter(r=>r.status==='Unavailable').length;
+  const rem  = allResults.length - ok - dead;
+  const elapsed = document.getElementById('timerEl').textContent;
+  const grps = new Set(allResults.map(r=>r.group)).size;
+  const favs = favorites.length;
+  const pct  = allResults.length ? Math.round(ok/allResults.length*100) : 0;
+  const s = allResults.length ? Math.floor((Date.now()-timerT0)/1000) : 0;
+  const rate = s > 0 ? Math.round(ok/s) : 0;
+
+  const extra = `<div class="info-grid">
+    <div class="info-cell"><div class="info-cell-lbl">${t('total')}</div><div class="info-cell-val" style="color:var(--cyan)">${allResults.length}</div></div>
+    <div class="info-cell"><div class="info-cell-lbl">${t('working')}</div><div class="info-cell-val" style="color:var(--green)">${ok}</div></div>
+    <div class="info-cell"><div class="info-cell-lbl">${t('dead')}</div><div class="info-cell-val" style="color:var(--red)">${dead}</div></div>
+    <div class="info-cell"><div class="info-cell-lbl">${t('left')}</div><div class="info-cell-val" style="color:var(--amber)">${rem}</div></div>
+    <div class="info-cell"><div class="info-cell-lbl">${t('alive_pct')}</div><div class="info-cell-val" style="color:var(--green)">${pct}%</div></div>
+    <div class="info-cell"><div class="info-cell-lbl">${t('favorites')}</div><div class="info-cell-val" style="color:var(--amber)">${favs}</div></div>
+    <div class="info-cell"><div class="info-cell-lbl">${t('groups')}</div><div class="info-cell-val" style="color:var(--cyan)">${grps}</div></div>
+    <div class="info-cell"><div class="info-cell-lbl">${t('rate')}</div><div class="info-cell-val" style="color:var(--amber)">${rate} ch/s</div></div>
+  </div>`;
+
+  modal('INDEX33 // INFO', `${lang==='ru'?'Время проверки':'Check time'}: ${elapsed}`, 'amb', extra);
+});
+
+/* ══════════════ PARSE ══════════════ */
+function detectType(name, content) {
+  const e = (name||'').split('.').pop().toLowerCase();
+  if (e==='json') return 'JSON';
+  const t = (content||'').trimStart();
+  if (t.startsWith('{')||t.startsWith('[')) return 'JSON';
+  return 'M3U';
+}
+
+function parseM3U(content) {
+  const links = [];
+  const lines = content.split(/\r?\n/);
+  let cur = { name:'—', group:'—', logo:DLOGO };
+  for (let i=0;i<lines.length;i++) {
+    const ln = lines[i].trim();
+    if (!ln) continue;
+    if (ln.startsWith('#EXTINF:')) {
+      const nm  = ln.match(/tvg-name="([^"]*)"/);
+      const grp = ln.match(/group-title="([^"]*)"/);
+      const lg  = ln.match(/tvg-logo="([^"]*)"/);
+      const cm  = ln.match(/,(.+)$/);
+      cur = {
+        name:  (nm?nm[1]:cm?cm[1]:'').trim()||'—',
+        group: grp?grp[1].trim():'—',
+        logo:  lg?lg[1].trim():DLOGO
+      };
+    } else if (!ln.startsWith('#') && (ln.startsWith('http')||ln.startsWith('rtmp')||ln.startsWith('rtsp'))) {
+      links.push({...cur, host:ln, status:'Checking'});
+      cur = {name:'—',group:'—',logo:DLOGO};
+    }
+  }
+  return links;
+}
+
+function parseJSON(content) {
+  let data; try{data=JSON.parse(content)}catch{return[]}
+  if(!Array.isArray(data)) data=[data];
+  return data.map(i=>({
+    name:i.name||i.title||'—', group:i.group||i.type||'—',
+    host:i.url||i.host||'', logo:i.img||i.logo||DLOGO, status:'Checking'
+  })).filter(i=>i.host);
+}
+
+function parseInput(content,type){ return type==='JSON'?parseJSON(content):parseM3U(content); }
+
+/* ══════════════ SMART DOMAIN THROTTLING ══════════════ */
+function getDomain(url) {
+  try {
+    const u = new URL(url);
+    return u.hostname;
+  } catch { return 'unknown'; }
+}
+
+async function smartFetch(url, options = {}) {
+  const domain = getDomain(url);
+  
+  // Initialize queue for domain if needed
+  if (!domainQueue[domain]) {
+    domainQueue[domain] = { queue: [], active: 0, max: 6 }; // Browser limit per domain
+  }
+  
+  return new Promise((resolve, reject) => {
+    const task = () => {
+      fetch(url, options)
+        .then(resolve)
+        .catch(reject)
+        .finally(() => {
+          domainQueue[domain].active--;
+          // Process next in queue
+          if (domainQueue[domain].queue.length > 0) {
+            const next = domainQueue[domain].queue.shift();
+            domainQueue[domain].active++;
+            next();
+          }
+        });
+    };
+    
+    if (domainQueue[domain].active < domainQueue[domain].max) {
+      domainQueue[domain].active++;
+      task();
+    } else {
+      domainQueue[domain].queue.push(task);
+    }
+  });
+}
+
+/* ══════════════ CHECK LINK (OPTIMIZED) ══════════════ */
+async function checkLink(url) {
+  const settings = {
+    timeout: parseInt(document.getElementById('timeoutSel').value) || 1000,
+    useHead: document.getElementById('useHeadCheck').checked,
+    headGetFallback: document.getElementById('headGetFallback').checked,
+    useRange: document.getElementById('useRangeCheck').checked,
+    useCorsProxy: document.getElementById('useCorsProxy').checked,
+    proxyUrl: document.getElementById('proxyUrl').value.trim(),
+    rotateUA: document.getElementById('rotateUA').checked,
+    checkOnly2KB: document.getElementById('checkOnly2KB').checked
+  };
+  
+  // Apply CORS proxy if enabled
+  let checkUrl = url;
+  if (settings.useCorsProxy && settings.proxyUrl) {
+    checkUrl = settings.proxyUrl + encodeURIComponent(url);
+  }
+  
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), settings.timeout);
+  
+  const headers = {
+    'Accept': 'video/mp4,video/x-matroska,application/vnd.apple.mpegurl,application/octet-stream,*/*',
+    'Cache-Control': 'no-cache'
+  };
+  
+  if (settings.rotateUA) {
+    headers['User-Agent'] = UA_POOL[Math.floor(Math.random() * UA_POOL.length)];
+  } else {
+    headers['User-Agent'] = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36';
+  }
+  
+  if (settings.useRange && settings.checkOnly2KB) {
+    headers['Range'] = 'bytes=0-2047';
+  }
+  
+  try {
+    // Try HEAD first if enabled
+    if (settings.useHead) {
+      try {
+        const headResp = await smartFetch(checkUrl, {
+          signal: controller.signal,
+          method: 'HEAD',
+          headers,
+          cache: 'no-store'
+        });
+        clearTimeout(timeoutId);
+        
+        const ct = headResp.headers.get('Content-Type') || '';
+        const isPlayable = headResp.ok && (
+          ct.includes('video') ||
+          ct.includes('application/vnd.apple.mpegurl') ||
+          ct.includes('application/octet-stream') ||
+          headResp.status === 200 || headResp.status === 206
+        );
+        
+        // Cache domain result
+        checkedDomains.set(getDomain(url), { ok: isPlayable, ts: Date.now() });
+        return isPlayable;
+      } catch (headErr) {
+        if (!settings.headGetFallback) throw headErr;
+        // Fallback to GET below
+      }
+    }
+    
+    // GET request
+    const getResp = await smartFetch(checkUrl, {
+      signal: controller.signal,
+      method: 'GET',
+      headers,
+      cache: 'no-store'
+    });
+    clearTimeout(timeoutId);
+    
+    const ct = getResp.headers.get('Content-Type') || '';
+    const isPlayable = getResp.ok && (
+      ct.includes('video') ||
+      ct.includes('application/vnd.apple.mpegurl') ||
+      ct.includes('application/octet-stream') ||
+      getResp.status === 200 || getResp.status === 206
+    );
+    
+    checkedDomains.set(getDomain(url), { ok: isPlayable, ts: Date.now() });
+    return isPlayable;
+    
+  } catch (error) {
+    clearTimeout(timeoutId);
+    
+    // Check cache for domain
+    const domain = getDomain(url);
+    const cached = checkedDomains.get(domain);
+    if (cached && (Date.now() - cached.ts) < 300000) { // 5 min cache
+      return cached.ok;
+    }
+    
+    return false;
+  }
+}
+
+/* ══════════════ POOL WITH SMART THROTTLING ══════════════ */
+async function runPool(items, concurrency, fn) {
+  let idx = 0;
+  
+  async function worker() {
+    while (idx < items.length && !stopFlag) {
+      const i = idx++;
+      try {
+        await fn(items[i], i);
+      } catch (e) {
+        console.warn('Worker error:', e);
+      }
+    }
+  }
+  
+  // Respect browser limits: max effective concurrency ~6 per domain
+  // So we cap total concurrency to avoid overwhelming
+  const effectiveConcurrency = Math.min(concurrency, 300); // Safe upper limit
+  
+  const ws = [];
+  for (let w = 0; w < Math.min(effectiveConcurrency, items.length); w++) {
+    ws.push(worker());
+  }
+  await Promise.all(ws);
+}
+
+/* ══════════════ PROCESS ══════════════ */
+async function processLinks(data) {
+  allResults = data;
+  filtCache  = [];
+  curPage    = 1;
+  updateStats();
+
+  const conc  = parseInt(document.getElementById('concurrencySel').value) || 150;
+  const total = allResults.length;
+  let uiT     = Date.now();
+
+  await runPool(allResults, conc, async (item, i) => {
+    if (stopFlag) return;
+    allResults[i].status = await checkLink(item.host) ? 'Available' : 'Unavailable';
+    
+    const now = Date.now();
+    if (now - uiT > 200) { // More frequent UI updates
+      uiT = now;
+      const done = allResults.filter(r=>r.status!=='Checking').length;
+      setProg((done/total)*100);
+      updateStats();
+      if (document.getElementById('pane-results').classList.contains('on')) {
+        rebuildFilter(); renderPage();
+      }
+    }
+  });
+
+  rebuildFilter(); updateStats(); renderPage(); updateGroups(); saveStore();
+  return allResults.filter(r=>r.status==='Available').length;
+}
+
+/* ══════════════ STATS ══════════════ */
+function updateStats() {
+  const ok   = allResults.filter(r=>r.status==='Available').length;
+  const dead = allResults.filter(r=>r.status==='Unavailable').length;
+  const rem  = allResults.length - ok - dead;
+  document.getElementById('sTot').textContent  = allResults.length;
+  document.getElementById('sOk').textContent   = ok;
+  document.getElementById('sDead').textContent = dead;
+  document.getElementById('sRem').textContent  = rem;
+  document.getElementById('remItem').style.display = rem>0?'':'none';
+  document.getElementById('btnExport').disabled = ok===0;
+}
+
+/* ══════════════ FILTER + RENDER + SORT ══════════════ */
+function rebuildFilter() {
+  const q = srchQ.toLowerCase().trim();
+  filtCache = allResults.filter(r => {
+    if (stFilter!=='all' && r.status!==stFilter) return false;
+    if (q && !r.name.toLowerCase().includes(q) && !r.group.toLowerCase().includes(q)) return false;
+    return true;
+  });
+}
+
+function sortData(data) {
+  return [...data].sort((a, b) => {
+    let valA = a[sortColumn];
+    let valB = b[sortColumn];
+    
+    if (sortColumn === 'status') {
+      const order = { 'Available': 1, 'Unavailable': 2, 'Checking': 3 };
+      valA = order[a.status] || 4;
+      valB = order[b.status] || 4;
+    } else if (typeof valA === 'string') {
+      valA = valA.toLowerCase();
+      valB = valB.toLowerCase();
+    }
+    
+    if (valA < valB) return sortDirection === 'asc' ? -1 : 1;
+    if (valA > valB) return sortDirection === 'asc' ? 1 : -1;
+    return 0;
+  });
+}
+
+function E(s){ 
+  if (!s) return '';
+  return String(s)
+    .replace(/&/g,'&amp;')
+    .replace(/</g,'&lt;')
+    .replace(/>/g,'&gt;')
+    .replace(/"/g,'&quot;')
+    .replace(/'/g,'&#39;'); 
+}
+
+function renderPage() {
+  const total = filtCache.length;
+  const pages = Math.max(1, Math.ceil(total/pgSz));
+  if (curPage>pages) curPage=pages;
+  const sorted = sortData(filtCache);
+  const sl = sorted.slice((curPage-1)*pgSz, curPage*pgSz);
+
+  let html='';
+  for (const r of sl) {
+    const fav = favorites.some(f=>f.host===r.host);
+    const stBadge = r.status==='Available'
+      ? `<span class="badge b-ok">● ${t('live')}</span>`
+      : r.status==='Unavailable'
+      ? `<span class="badge b-err">✕ ${t('dead')}</span>`
+      : `<span class="badge b-chk">⟳ ${t('checking')}</span>`;
+
+    const acts = r.status==='Available'
+      ? `<div class="act-btns">
+          <button class="act-btn ab-play" title="${t('watch')}"  onclick="openMini('${E(r.host)}','${E(r.name)}')">▶</button>
+          <button class="act-btn ab-ext"  title="${t('external')}" onclick="openExtUrl('${E(r.host)}')">↗</button>
+          <button class="act-btn ab-copy" title="${t('copy_url')}" onclick="copyUrl('${E(r.host)}')">📋</button>
+          <button class="act-btn ab-fav ${fav?'on':''}" title="${t('favorite')}" onclick="toggleFav('${E(r.host)}')">★</button>
+        </div>`
+      : r.status==='Unavailable' 
+      ? `<div class="act-btns">
+          <button class="act-btn ab-ext" title="${t('external')}" onclick="openExtUrl('${E(r.host)}')">↗</button>
+          <button class="act-btn ab-copy" title="${t('copy_url')}" onclick="copyUrl('${E(r.host)}')">📋</button>
+        </div>`
+      : '';
+
+    html += `<tr>
+      <td class="td-logo"><img class="ch-logo" src="${E(r.logo)}" onerror="this.src='${DLOGO}'" loading="lazy" alt=""></td>
+      <td title="${E(r.name)}">${E(r.name)}</td>
+      <td title="${E(r.group)}" style="color:var(--txt2)">${E(r.group)}</td>
+      <td>${stBadge}</td>
+      <td class="td-actions">${acts}</td>
+    </tr>`;
+  }
+
+  document.getElementById('resTbody').innerHTML = html;
+  document.getElementById('pgInfo').textContent = `${curPage} / ${pages}`;
+  document.getElementById('pgCount').textContent= `${total} / ${allResults.length}`;
+  document.getElementById('pgPrev').disabled = curPage<=1;
+  document.getElementById('pgNext').disabled = curPage>=pages;
+
+  // Update sort indicators
+  document.querySelectorAll('thead th[data-sort]').forEach(th => {
+    th.classList.remove('sort-asc', 'sort-desc');
+    if (th.dataset.sort === sortColumn) {
+      th.classList.add(sortDirection === 'asc' ? 'sort-asc' : 'sort-desc');
+    }
+  });
+}
+
+/* ══════════════ COPY URL ══════════════ */
+function copyUrl(url) {
+  navigator.clipboard.writeText(url).then(() => {
+    modal(t('copied'), t('link_copied'), 'ok');
+  }).catch(() => {
+    // Fallback
+    const ta = document.createElement('textarea');
+    ta.value = url;
+    ta.style.position = 'fixed';
+    ta.style.opacity = '0';
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand('copy');
+    document.body.removeChild(ta);
+    modal(t('copied'), t('link_copied'), 'ok');
+  });
+}
+window.copyUrl = copyUrl;
+
+/* ══════════════ PAGER ══════════════ */
+document.getElementById('pgPrev').addEventListener('click',()=>{curPage--;renderPage();});
+document.getElementById('pgNext').addEventListener('click',()=>{curPage++;renderPage();});
+document.getElementById('pgSize').addEventListener('change',e=>{pgSz=parseInt(e.target.value);curPage=1;renderPage();});
+
+/* ══════════════ FILTERS ══════════════ */
+document.querySelectorAll('.filter-chip').forEach(c=>{
+  c.addEventListener('click',()=>{
+    document.querySelectorAll('.filter-chip').forEach(x=>x.classList.remove('on'));
+    c.classList.add('on');
+    stFilter=c.dataset.st; curPage=1; rebuildFilter(); renderPage();
+  });
+});
+
+document.getElementById('srchIn').addEventListener('input',e=>{
+  srchQ=e.target.value; curPage=1; rebuildFilter(); renderPage();
+});
+
+/* ══════════════ SORTING ══════════════ */
+document.querySelectorAll('thead th[data-sort]').forEach(th => {
+  th.addEventListener('click', () => {
+    const col = th.dataset.sort;
+    if (sortColumn === col) {
+      sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+      sortColumn = col;
+      sortDirection = 'asc';
+    }
+    renderPage();
+  });
+});
+
+/* ══════════════ FAVORITES ══════════════ */
+function toggleFav(host) {
+  const r = allResults.find(r=>r.host===host); if(!r) return;
+  const idx = favorites.findIndex(f=>f.host===host);
+  if(idx===-1) favorites.push(r); else favorites.splice(idx,1);
+  localStorage.setItem('i33_fav',JSON.stringify(favorites));
+  rebuildFilter(); renderPage(); renderFav();
+}
+window.toggleFav = toggleFav;
+
+function renderFav() {
+  let html='';
+  for(const r of favorites){
+    html+=`<tr>
+      <td class="td-logo"><img class="ch-logo" src="${E(r.logo)}" onerror="this.src='${DLOGO}'" loading="lazy" alt=""></td>
+      <td title="${E(r.name)}">${E(r.name)}</td>
+      <td style="color:var(--txt2)">${E(r.group)}</td>
+      <td><span class="badge b-ok">● ${t('live')}</span></td>
+      <td class="td-actions"><div class="act-btns">
+        <button class="act-btn ab-play" onclick="openMini('${E(r.host)}','${E(r.name)}')">▶</button>
+        <button class="act-btn ab-ext"  onclick="openExtUrl('${E(r.host)}')">↗</button>
+        <button class="act-btn ab-copy" onclick="copyUrl('${E(r.host)}')">📋</button>
+        <button class="act-btn ab-fav on" onclick="toggleFav('${E(r.host)}')">★</button>
+      </div></td>
+    </tr>`;
+  }
+  document.getElementById('favTbody').innerHTML = html;
+}
+
+/* ══════════════ GROUPS ══════════════ */
+function updateGroups() {
+  const grps = [...new Set(allResults.map(r=>r.group||'—'))].sort();
+  document.getElementById('groupsList').innerHTML =
+    grps.map(g=>`<li onclick="filterByGroup('${E(g)}')">${E(g)}</li>`).join('');
+}
+
+function filterByGroup(g) {
+  document.getElementById('srchIn').value = g; srchQ = g;
+  stFilter='all';
+  document.querySelectorAll('.filter-chip').forEach(c=>c.classList.remove('on'));
+  document.querySelector('[data-st="all"]').classList.add('on');
+  curPage=1; rebuildFilter(); renderPage();
+  document.querySelector('[data-tab="results"]').click();
+}
+
+/* ══════════════ HISTORY ══════════════ */
+function saveHist(name, total, ok) {
+  const h=JSON.parse(localStorage.getItem('i33_hist')||'[]');
+  h.unshift({name,total,ok,date:Date.now()});
+  localStorage.setItem('i33_hist',JSON.stringify(h.slice(0,15)));
+  renderHist();
+}
+
+function renderHist() {
+  const h=JSON.parse(localStorage.getItem('i33_hist')||'[]');
+  document.getElementById('histList').innerHTML=h.map(i=>{
+    const nm=i.name.length>26?i.name.slice(0,26)+'…':i.name;
+    const d=new Date(i.date).toLocaleString(lang==='ru'?'ru-RU':'en-US',{day:'2-digit',month:'2-digit',hour:'2-digit',minute:'2-digit'});
+    return `<li>${E(nm)} — ${i.ok}/${i.total} [${d}]</li>`;
+  }).join('');
+}
+
+/* ══════════════ STORAGE ══════════════ */
+function saveStore() {
+  try {
+    localStorage.setItem('i33_res',JSON.stringify(
+      allResults.map(r=>({n:r.name,g:r.group,h:r.host,l:r.logo,s:r.status}))
+    ));
+  } catch {}
+}
+
+function loadStore() {
+  try {
+    const raw=localStorage.getItem('i33_res');
+    if(raw){
+      allResults=JSON.parse(raw).map(r=>({name:r.n,group:r.g,host:r.h,logo:r.l,status:r.s}));
+      rebuildFilter(); updateStats(); updateGroups(); renderPage();
+    }
+    const f=localStorage.getItem('i33_fav');
+    if(f){favorites=JSON.parse(f);renderFav();}
+  } catch {}
+  renderHist();
+  loadSettings();
+}
+
+/* ══════════════ SETTINGS SAVE/LOAD ══════════════ */
+function saveSettings() {
+  const settings = {
+    timeout: document.getElementById('timeoutSel').value,
+    concurrency: document.getElementById('concurrencySel').value,
+    useHead: document.getElementById('useHeadCheck').checked,
+    headGetFallback: document.getElementById('headGetFallback').checked,
+    useRange: document.getElementById('useRangeCheck').checked,
+    useCorsProxy: document.getElementById('useCorsProxy').checked,
+    proxyUrl: document.getElementById('proxyUrl').value,
+    rotateUA: document.getElementById('rotateUA').checked,
+    checkOnly2KB: document.getElementById('checkOnly2KB').checked
+  };
+  localStorage.setItem('i33_settings', JSON.stringify(settings));
+}
+
+function loadSettings() {
+  const saved = localStorage.getItem('i33_settings');
+  if (saved) {
+    try {
+      const s = JSON.parse(saved);
+      document.getElementById('timeoutSel').value = s.timeout || '1000';
+      document.getElementById('concurrencySel').value = s.concurrency || '150';
+      document.getElementById('useHeadCheck').checked = s.useHead !== false;
+      document.getElementById('headGetFallback').checked = s.headGetFallback !== false;
+      document.getElementById('useRangeCheck').checked = s.useRange !== false;
+      document.getElementById('useCorsProxy').checked = !!s.useCorsProxy;
+      document.getElementById('proxyUrl').value = s.proxyUrl || 'https://api.allorigins.win/raw?url=';
+      document.getElementById('rotateUA').checked = !!s.rotateUA;
+      document.getElementById('checkOnly2KB').checked = s.checkOnly2KB !== false;
+    } catch (e) {}
+  }
+  
+  // Show/hide proxy field
+  document.getElementById('proxyUrlFld').style.display = 
+    document.getElementById('useCorsProxy').checked ? 'block' : 'none';
+  document.getElementById('corsWarning').style.display = 
+    document.getElementById('useCorsProxy').checked ? 'none' : 'block';
+  
+  // Highlight active speed preset
+  const t = parseInt(document.getElementById('timeoutSel').value);
+  const c = parseInt(document.getElementById('concurrencySel').value);
+  document.querySelectorAll('.spd-btn').forEach(btn => {
+    const btnT = parseInt(btn.dataset.t);
+    const btnC = parseInt(btn.dataset.c);
+    btn.classList.toggle('on', btnT === t && btnC === c);
+  });
+}
+
+// Save settings on change
+['timeoutSel','concurrencySel','useHeadCheck','headGetFallback','useRangeCheck','useCorsProxy','proxyUrl','rotateUA','checkOnly2KB'].forEach(id=>{
+  const el = document.getElementById(id);
+  if(el) el.addEventListener('change', saveSettings);
+  if(el && id === 'proxyUrl') el.addEventListener('input', saveSettings);
+});
+
+/* ══════════════ READ FILE ══════════════ */
+function readFile(file) {
+  return new Promise((res,rej)=>{
+    const fr=new FileReader();
+    fr.onload=e=>res(e.target.result);
+    fr.onerror=()=>rej(new Error(t('file_read_error')));
+    fr.readAsText(file,'UTF-8');
+  });
+}
+
+/* ══════════════ START CHECK ══════════════ */
+document.getElementById('btnCheck').addEventListener('click', async () => {
+  const fi  = document.getElementById('fileInput');
+  const url = document.getElementById('m3uUrl').value.trim();
+
+  stopFlag=false;
+  document.getElementById('btnCheck').disabled   = true;
+  document.getElementById('btnStop').disabled    = false;
+  document.getElementById('btnRefresh').disabled = true;
+  showProg(); setProg(0); startTimer(); startSpd();
+
+  try {
+    let content='', name='', type='';
+
+    if (fi.files.length) {
+      name    = fi.files[0].name;
+      setProg(2);
+      content = await readFile(fi.files[0]);
+      type    = detectType(name, content);
+    } else if (url) {
+      name = url.split('/').pop().split('?')[0] || 'playlist';
+      setProg(2);
+      const ac=new AbortController();
+      const ti=setTimeout(()=>ac.abort(),90000);
+      const resp=await fetch(url,{signal:ac.signal,headers:{'User-Agent':'Mozilla/5.0'}});
+      clearTimeout(ti);
+      if(!resp.ok) throw new Error(`HTTP ${resp.status}`);
+      content=await resp.text();
+      type=detectType(url,content);
+    } else {
+      throw new Error(t('select_source'));
+    }
+
+    if(!content.trim()) throw new Error(t('file_empty'));
+    setProg(5);
+    await new Promise(r=>setTimeout(r,0));
+
+    const links = parseInput(content, type);
+    if(!links.length) throw new Error(t('no_links'));
+
+    // Deduplicate
+    const seen=new Set();
+    const uniq=links.filter(l=>{ if(seen.has(l.host))return false; seen.add(l.host); return true; });
+    const dupes=links.length-uniq.length;
+
+    setProg(8);
+    const ok = await processLinks(uniq);
+    const el = ((Date.now()-timerT0)/1000).toFixed(0);
+
+    saveHist(name, uniq.length, ok);
+    stopTimer(); stopSpd();
+
+    modal(
+      t('done'),
+      `${t('working')}: ${ok} / ${uniq.length}\n${t('dupes_removed')}: ${dupes}\n${t('time')}: ${pad(Math.floor(el/60))}:${pad(el%60)}`,
+      'ok'
+    );
+  } catch(e) {
+    stopTimer(); stopSpd();
+    modal(t('error'), e.message, 'err');
+    console.error(e);
+  } finally {
+    document.getElementById('btnCheck').disabled   = false;
+    document.getElementById('btnStop').disabled    = true;
+    document.getElementById('btnRefresh').disabled = false;
+    hideProg();
+  }
+});
+
+/* ══════════════ STOP ══════════════ */
+document.getElementById('btnStop').addEventListener('click',()=>{
+  stopFlag=true; stopTimer(); stopSpd(); hideProg();
+  document.getElementById('btnStop').disabled=true;
+  rebuildFilter(); renderPage();
+  const done=allResults.filter(r=>r.status!=='Checking').length;
+  modal(
+    t('stopped'),
+    `${t('checked')}: ${done} / ${allResults.length}\n${t('working')}: ${allResults.filter(r=>r.status==='Available').length}`,
+    'inf'
+  );
+});
+
+/* ══════════════ REFRESH ══════════════ */
+document.getElementById('btnRefresh').addEventListener('click', async ()=>{
+  if(!allResults.length){modal(t('error'),lang==='ru'?'Нет данных':'No data','err');return;}
+  stopFlag=false;
+  allResults.forEach(r=>r.status='Checking');
+  document.getElementById('btnRefresh').disabled=true;
+  document.getElementById('btnStop').disabled=false;
+  showProg(); startTimer(); startSpd();
+
+  const conc=parseInt(document.getElementById('concurrencySel').value)||150;
+  let uiT=Date.now();
+  await runPool(allResults,conc,async(item,i)=>{
+    allResults[i].status=await checkLink(item.host)?'Available':'Unavailable';
+    const now=Date.now();
+    if(now-uiT>200){uiT=now;setProg(allResults.filter(r=>r.status!=='Checking').length/allResults.length*100);updateStats();}
+  });
+
+  rebuildFilter(); updateStats(); renderPage(); saveStore();
+  stopTimer(); stopSpd(); hideProg();
+  document.getElementById('btnRefresh').disabled=false;
+  document.getElementById('btnStop').disabled=true;
+  modal(
+    t('refreshed'),
+    `${t('working')}: ${allResults.filter(r=>r.status==='Available').length} / ${allResults.length}`,
+    'ok'
+  );
+});
+
+/* ══════════════ CLEAR ══════════════ */
+document.getElementById('btnClear').addEventListener('click',()=>{
+  allResults=[];filtCache=[];favorites=[];
+  ['i33_res','i33_fav','i33_hist'].forEach(k=>localStorage.removeItem(k));
+  updateStats();rebuildFilter();renderPage();renderFav();updateGroups();renderHist();
+  document.getElementById('btnExport').disabled=true;
+  document.getElementById('timerEl').textContent='00:00:00';
+  document.getElementById('etaEl').textContent='—';
+  document.getElementById('blobPanel').style.display='none';
+  hideProg();
+  if(window._blobUrl){URL.revokeObjectURL(window._blobUrl);window._blobUrl=null;}
+  // Clear domain queues
+  domainQueue = {};
+  checkedDomains.clear();
+});
+
+/* ══════════════ QUICK TEST ══════════════ */
+document.getElementById('btnTest').addEventListener('click', async ()=>{
+  const pool = allResults.filter(r=>r.status==='Available');
+  if(pool.length < 1){
+    modal(
+      t('test_title'),
+      t('check_first'),
+      'inf'
+    );
+    return;
+  }
+
+  const shuffled = [...pool].sort(()=>Math.random()-.5).slice(0,3);
+
+  const rows = shuffled.map(r=>`
+    <div class="test-ch-row">
+      <span class="test-ch-name">${E(r.name)}</span>
+      <span class="test-ch-st" id="tst_${E(r.host.slice(-16))}" style="color:var(--amber)">⟳</span>
+      <button class="act-btn ab-play" onclick="openMini('${E(r.host)}','${E(r.name)}');document.getElementById('modal').classList.remove('show')" style="flex-shrink:0">▶</button>
+    </div>`).join('');
+
+  modal(
+    t('test_title'),
+    t('test_msg'),
+    'amb',
+    `<div class="test-channels">${rows}</div>`
+  );
+});
+
+/* ══════════════ EXPORT ══════════════ */
+document.getElementById('btnExport').addEventListener('click',()=>{
+  const fmt  = document.getElementById('exportFmt').value;
+  const avail= allResults.filter(r=>r.status==='Available');
+  if(!avail.length){modal(t('error'),t('no_working'),'err');return;}
+
+  let content, filename, mime;
+  if(fmt==='m3u'||fmt==='txt'){
+    const parts=['#EXTM3U\n'];
+    for(const r of avail)
+      parts.push(`#EXTINF:-1 tvg-logo="${r.logo||''}" group-title="${r.group||''}",${r.name||''}\n${r.host}\n`);
+    content=parts.join('');
+    filename=fmt==='m3u'?'index33_playlist.m3u':'index33_links.txt';
+    mime='application/x-mpegurl';
+  } else {
+    content=JSON.stringify(avail.map(r=>({name:r.name,type:r.group,url:r.host,img:r.logo})),null,2);
+    filename='index33_links.json'; mime='application/json';
+  }
+
+  const blob=new Blob([content],{type:mime});
+  const blobUrl=URL.createObjectURL(blob);
+
+  // Download
+  const a=Object.assign(document.createElement('a'),{href:blobUrl,download:filename,style:'display:none'});
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+
+  // Blob link for VLC/Kodi
+  if(window._blobUrl) URL.revokeObjectURL(window._blobUrl);
+  window._blobUrl = blobUrl;
+  document.getElementById('blobPanel').style.display='block';
+  document.getElementById('blobLink').href=blobUrl;
+  document.getElementById('blobLink').textContent=blobUrl;
+
+  modal(
+    t('export_title'),
+    `${filename}\n${avail.length} ${t('channels')}\n\n${t('blob_ready')}`,
+    'ok'
+  );
+});
+
+document.getElementById('btnCopyBlob').addEventListener('click',()=>{
+  const url=document.getElementById('blobLink').href;
+  if(!url||url==='#') return;
+  copyUrl(url);
+});
+
+document.getElementById('btnRevokeBlob').addEventListener('click',()=>{
+  if(window._blobUrl){URL.revokeObjectURL(window._blobUrl);window._blobUrl=null;}
+  document.getElementById('blobPanel').style.display='none';
+  document.getElementById('blobLink').href='#';
+  document.getElementById('blobLink').textContent='—';
+});
+
+/* ══════════════ PDF ══════════════ */
+document.getElementById('btnPdf').addEventListener('click',()=>{
+  if(typeof window.jspdf==='undefined'){modal('ERROR','jsPDF not loaded','err');return;}
+  const {jsPDF}=window.jspdf;
+  const doc=new jsPDF();
+  const ok=allResults.filter(r=>r.status==='Available').length;
+  const tot=allResults.length;
+  doc.setFont('helvetica','bold'); doc.setFontSize(20);
+  doc.text('INDEX33 // IPTV REPORT',10,20);
+  doc.setFont('helvetica','normal'); doc.setFontSize(11);
+  doc.text(`Date: ${new Date().toLocaleString()}`,10,33);
+  doc.text(`Elapsed: ${document.getElementById('timerEl').textContent}`,10,43);
+  doc.text(`Total: ${tot}`,10,53);
+  doc.text(`Working: ${ok}`,10,63);
+  doc.text(`Dead: ${tot-ok}`,10,73);
+  doc.text(`Favorites: ${favorites.length}`,10,83);
+  doc.text(`Groups: ${[...new Set(allResults.map(r=>r.group))].length}`,10,93);
+  doc.save('index33_report.pdf');
+});
+
+/* ══════════════ COMPARE ══════════════ */
+document.getElementById('btnCompare').addEventListener('click', async ()=>{
+  const fi=document.getElementById('cmpFile');
+  if(!fi.files.length||!allResults.length){
+    modal(t('error'),lang==='ru'?'Загрузите оба плейлиста':'Load both playlists first','err');
+    return;
+  }
+  const content=await readFile(fi.files[0]);
+  const type=detectType(fi.files[0].name,content);
+  const second=parseInput(content,type);
+  const firstSet=new Set(allResults.map(r=>r.host));
+  let html='';
+  for(const r of second){
+    const dup=firstSet.has(r.host);
+    html+=`<tr>
+      <td title="${E(r.name)}">${E(r.name)}</td>
+      <td style="color:var(--txt2)">${E(r.group)}</td>
+      <td><span class="badge ${dup?'b-chk':'b-ok'}">${dup?t('duplicate'):t('unique_item')}</span></td>
+      <td style="color:var(--txt2)">${t('2nd_playlist')}</td>
+    </tr>`;
+  }
+  document.getElementById('cmpTbody').innerHTML=html;
+  document.getElementById('cmpWrap').style.display='block';
+  modal(
+    t('compare_title'),
+    `${t('first')}: ${allResults.length}\n${t('second')}: ${second.length}\n${t('dupes')}: ${second.filter(r=>firstSet.has(r.host)).length}\n${t('unique')}: ${second.filter(r=>!firstSet.has(r.host)).length}`,
+    'inf'
+  );
+});
+
+/* ══════════════════════════════════════
+   MINI-PLAYER: Quick Preview
+   Draggable, resizable, HLS support, ESC to close
+══════════════════════════════════════ */
+let miniHlsInst = null;
+
+function openMini(url, name) {
+  const box   = document.getElementById('miniPlayer');
+  const video = document.getElementById('miniVideo');
+  const st    = document.getElementById('miniStatus');
+  const title = document.getElementById('miniTitle');
+
+  // Stop previous
+  video.pause();
+  if(miniHlsInst){miniHlsInst.destroy();miniHlsInst=null;}
+  video.src=''; video.load();
+
+  title.textContent = name||url;
+  st.className='mini-status load';
+  st.textContent = t('loading');
+  box.classList.add('show');
+
+  const isHLS = url.includes('.m3u8') || url.includes('application/vnd.apple.mpegurl');
+
+  if(isHLS && typeof Hls!=='undefined' && Hls.isSupported()){
+    miniHlsInst=new Hls({enableWorker:true,lowLatencyMode:true});
+    miniHlsInst.loadSource(url);
+    miniHlsInst.attachMedia(video);
+    miniHlsInst.on(Hls.Events.MANIFEST_PARSED,()=>{
+      st.className='mini-status ok';
+      st.textContent = t('playing');
+      video.play().catch(()=>{});
+    });
+    miniHlsInst.on(Hls.Events.ERROR,(_,d)=>{
+      if(d.fatal){
+        st.className='mini-status err';
+        st.textContent = t('stream_error');
+        miniHlsInst.destroy(); miniHlsInst=null;
+      }
+    });
+  } else {
+    video.src=url;
+    video.oncanplay=()=>{
+      st.className='mini-status ok';
+      st.textContent = t('playing');
+    };
+    video.onerror=()=>{
+      st.className='mini-status err';
+      st.textContent = t('cannot_play');
+    };
+    video.play().catch(()=>{});
+  }
+}
+window.openMini = openMini;
+
+// Mini player controls
+document.getElementById('miniClose').addEventListener('click', closeMini);
+document.getElementById('miniExpand').addEventListener('click', ()=>{
+  const video=document.getElementById('miniVideo');
+  const src=video.src||'';
+  const name=document.getElementById('miniTitle').textContent;
+  closeMini();
+  openFull(src,name);
+});
+document.getElementById('miniExt').addEventListener('click', ()=>{
+  const url = document.getElementById('miniVideo').src;
+  if(url) openExtUrl(url);
+});
+document.getElementById('miniCopy').addEventListener('click', ()=>{
+  const url = document.getElementById('miniVideo').src;
+  if(url) copyUrl(url);
+});
+
+function closeMini() {
+  const video=document.getElementById('miniVideo');
+  video.pause();
+  if(miniHlsInst){miniHlsInst.destroy();miniHlsInst=null;}
+  video.src='';
+  document.getElementById('miniPlayer').classList.remove('show');
+}
+
+/* ══════════════ FULL PLAYER ══════════════ */
+let fullHlsInst = null;
+
+function openFull(url, name) {
+  const box   = document.getElementById('fullPlayer');
+  const video = document.getElementById('fullVideo');
+  document.getElementById('fpTitle').textContent = name||url;
+  video.pause();
+  if(fullHlsInst){fullHlsInst.destroy();fullHlsInst=null;}
+  video.src=''; video.load();
+
+  if((url.includes('.m3u8') || url.includes('application/vnd.apple.mpegurl')) && typeof Hls!=='undefined' && Hls.isSupported()){
+    fullHlsInst=new Hls({enableWorker:true,lowLatencyMode:true});
+    fullHlsInst.loadSource(url); fullHlsInst.attachMedia(video);
+    fullHlsInst.on(Hls.Events.MANIFEST_PARSED,()=>{box.classList.add('show');video.play().catch(()=>{});});
+    fullHlsInst.on(Hls.Events.ERROR,(_,d)=>{
+      if(d.fatal){fullHlsInst.destroy();fullHlsInst=null;box.classList.remove('show');}
+    });
+  } else {
+    video.src=url; box.classList.add('show');
+    video.play().catch(()=>{});
+  }
+}
+
+function closeFull() {
+  const video=document.getElementById('fullVideo');
+  video.pause();
+  if(fullHlsInst){fullHlsInst.destroy();fullHlsInst=null;}
+  video.src='';
+  document.getElementById('fullPlayer').classList.remove('show');
+}
+
+document.getElementById('fpClose').addEventListener('click', closeFull);
+
+/* ══════════════ EXTERNAL ══════════════ */
+function openExtUrl(url){ window.open(url,'_blank'); }
+window.openExtUrl=openExtUrl;
+
+/* ══════════════ DRAG MINI PLAYER (Touch + Mouse) ══════════════ */
+(function(){
+  const box = document.getElementById('miniPlayer');
+  const hdr = document.getElementById('miniDragHdr');
+  let ox=0,oy=0,bx=0,by=0,dragging=false;
+
+  function startDrag(e) {
+    if(e.target.closest('.mini-btn')) return;
+    dragging=true;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    ox=clientX; oy=clientY;
+    const rect=box.getBoundingClientRect();
+    bx=rect.left; by=rect.top;
+    box.style.transition='none';
+    if(!e.touches) e.preventDefault();
+  }
+
+  function onDrag(e) {
+    if(!dragging) return;
+    const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+    const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    const dx=clientX-ox; const dy=clientY-oy;
+    box.style.right='auto'; box.style.bottom='auto';
+    box.style.left=Math.max(0,bx+dx)+'px';
+    box.style.top =Math.max(0,by+dy)+'px';
+    if(!e.touches) e.preventDefault();
+  }
+
+  function endDrag() { dragging=false; }
+
+  hdr.addEventListener('mousedown', startDrag);
+  document.addEventListener('mousemove', onDrag);
+  document.addEventListener('mouseup', endDrag);
+
+  hdr.addEventListener('touchstart', startDrag, {passive:false});
+  document.addEventListener('touchmove', onDrag, {passive:false});
+  document.addEventListener('touchend', endDrag);
+})();
+
+/* ══════════════ KEYBOARD SHORTCUTS ══════════════ */
+document.addEventListener('keydown', (e) => {
+  if(e.key === 'Escape') {
+    if(document.getElementById('miniPlayer').classList.contains('show')) {
+      closeMini();
+    } else if(document.getElementById('fullPlayer').classList.contains('show')) {
+      closeFull();
+    } else if(document.getElementById('modal').classList.contains('show')) {
+      document.getElementById('modal').classList.remove('show');
+    }
+  }
+});
+
+/* ══════════════ INIT ══════════════ */
+(function(){
+  setLang(lang);
+  loadStore();
+  
+  // Show CORS warning on load if proxy not enabled
+  document.getElementById('corsWarning').style.display = 
+    document.getElementById('useCorsProxy').checked ? 'none' : 'block';
+})();
+</script>
+</body>
+</html>
