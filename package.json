@@ -1,0 +1,13 @@
+{
+  "name": "t2000-bombicheskiy",
+  "version": "1.0.0",
+  "description": "T2000 - Полноценный CDN прокси для GitHub и GitVerse",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "axios": "^1.6.0"
+  }
+}
