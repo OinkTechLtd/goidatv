@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>T2000 - Бомбический Сервис</title>
+    <style>
+        body { font-family: sans-serif; max-width: 800px; margin: 0 auto; padding: 40px; line-height: 1.6; background: #f4f4f4; }
+        .card { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        input { width: 100%; padding: 10px; margin: 10px 0; border: 1px solid #ddd; }
+        button { background: #007bff; color: white; padding: 10px 20px; border: none; cursor: pointer; }
+        nav { margin-bottom: 20px; }
+        nav a { margin-right: 15px; text-decoration: none; color: #333; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="/">Главная</a> | <a href="/docs.html">Документация</a> | <a href="/terms.html">Условия</a>
+    </nav>
+    <div class="card">
+        <h1>T2000 — Бомбический</h1>
+        <p>Мгновенная доставка файлов из GitHub и GitVerse с правильными MIME-типами.</p>
+        <input type="text" id="inputUrl" placeholder="Вставьте ссылку на репозиторий или файл...">
+        <button onclick="generate()">Получить ссылку</button>
+        <p id="result"></p>
+    </div>
+    <script>
+        function generate() {
+            const val = document.getElementById('inputUrl').value;
+            // Логика парсинга URL для примера
+            const proxyUrl = window.location.origin + '/proxy/github/user/repo/main/index.js';
+            document.getElementById('result').innerHTML = 'Ваша ссылка: <br><code>' + proxyUrl + '</code>';
+        }
+    </script>
+</body>
+</html>
